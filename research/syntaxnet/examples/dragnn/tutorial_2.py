@@ -45,7 +45,7 @@ def main(argv):
 
   # Construct the ComponentSpec for parsing.
   parser = spec_builder.ComponentSpecBuilder('parser')
-  tf.logging.info("ff")
+  print("ff")
   parser.set_network_unit(
       name='FeedForwardNetwork',
       hidden_layer_sizes='256',
@@ -72,14 +72,14 @@ def main(argv):
   tf.logging.info("fill from resources")
   parser.fill_from_resources(lexicon_dir)
 
-  tf.logging.info("master spec")
+  print("master spec")
   master_spec = spec_pb2.MasterSpec()
   master_spec.component.extend([tagger.spec, parser.spec])
 
   hyperparam_config = spec_pb2.GridPoint()
 
   # Build the TensorFlow graph.
-  tf.logging.info("graph")
+  print("graph")
   graph = tf.Graph()
   with graph.as_default():
     builder = graph_builder.MasterBuilder(master_spec, hyperparam_config)
@@ -95,14 +95,14 @@ def main(argv):
   text_format.Merge(open(training_sentence).read(), sentence)
   training_set = [sentence.SerializeToString()]
 
-  tf.logging.info("session")
+  print("session")
   with tf.Session(graph=graph) as sess:
     # Make sure to re-initialize all underlying state.
     sess.run(tf.initialize_all_variables())
     traces = sess.run(
         dry_run['traces'], feed_dict={dry_run['input_batch']: training_set})
 
-  tf.logging.info("write")
+  print("write")
   with open('dragnn_tutorial_2.html', 'w') as f:
     f.write(
         visualization.trace_html(
