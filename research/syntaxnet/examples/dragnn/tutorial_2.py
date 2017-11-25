@@ -45,6 +45,7 @@ def main(argv):
 
   # Construct the ComponentSpec for parsing.
   parser = spec_builder.ComponentSpecBuilder('parser')
+  tf.logging.info("ff")
   parser.set_network_unit(
       name='FeedForwardNetwork',
       hidden_layer_sizes='256',
@@ -60,20 +61,25 @@ def main(argv):
   # stack, we connect to the last time step to either SHIFT or REDUCE that
   # token. This allows the parser to build up compositional representations of
   # phrases.
+  tf.logging.info("recurrnent connection")
   parser.add_link(
       source=parser,  # recurrent connection
       name='rnn-stack',  # unique identifier
       fml='stack.focus stack(1).focus',  # look for both stack tokens
       source_translator='shift-reduce-step',  # maps token indices -> step
       embedding_dim=32)  # project down to 32 dims
+
+  tf.logging.info("fill from resources")
   parser.fill_from_resources(lexicon_dir)
 
+  tf.logging.info("master spec")
   master_spec = spec_pb2.MasterSpec()
   master_spec.component.extend([tagger.spec, parser.spec])
 
   hyperparam_config = spec_pb2.GridPoint()
 
   # Build the TensorFlow graph.
+  tf.logging.info("graph")
   graph = tf.Graph()
   with graph.as_default():
     builder = graph_builder.MasterBuilder(master_spec, hyperparam_config)
@@ -84,16 +90,19 @@ def main(argv):
     dry_run = builder.add_training_from_config(target, trace_only=True)
 
   # Read in serialized protos from training data.
+  tf.logging.info("read in protos")
   sentence = sentence_pb2.Sentence()
   text_format.Merge(open(training_sentence).read(), sentence)
   training_set = [sentence.SerializeToString()]
 
+  tf.logging.info("session")
   with tf.Session(graph=graph) as sess:
     # Make sure to re-initialize all underlying state.
     sess.run(tf.initialize_all_variables())
     traces = sess.run(
         dry_run['traces'], feed_dict={dry_run['input_batch']: training_set})
 
+  tf.logging.info("write")
   with open('dragnn_tutorial_2.html', 'w') as f:
     f.write(
         visualization.trace_html(
