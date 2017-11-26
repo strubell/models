@@ -23,7 +23,7 @@ output_dir=./trained-"$language"
 training_corpus=$1
 dev_corpus=$2
 
-bazel build -c opt //dragnn/tools:trainer //dragnn/conll2017:make_parser_spec
+# bazel build -c opt //dragnn/tools:trainer //dragnn/conll2017:make_parser_spec
 
 mkdir -p $output_dir
 bazel-bin/dragnn/conll2017/make_parser_spec \
