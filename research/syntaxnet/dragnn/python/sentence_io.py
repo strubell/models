@@ -54,6 +54,9 @@ class FormatSentenceReader(object):
           }
           """
     with self._graph.as_default():
+
+
+      tf.logging.info("in here")
       self._source, self._is_last = gen_parser_ops.document_source(
           task_context_str=task_context_str, batch_size=batch_size)
       if check_well_formed:
@@ -64,6 +67,7 @@ class FormatSentenceReader(object):
   def read(self):
     """Reads a single batch of sentences."""
     if self._session:
+      tf.logging.info("calling session.run")
       sentences, is_last = self._session.run([self._source, self._is_last])
       if is_last:
         self._session.close()
