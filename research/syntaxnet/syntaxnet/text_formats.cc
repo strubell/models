@@ -141,7 +141,7 @@ class CoNLLSyntaxFormat : public DocumentFormat {
       // Check that the ids follow the expected format.
       const int id = utils::ParseUsing<int>(fields[0], 0, utils::ParseInt32);
       CHECK_EQ(expected_id++, id)
-          << "(Line " << i+1 << ": |" << line[i] << "|) "
+          << "(Line " << i+1 << ": |" << lines[i] << "|) "
           << "Token ids start at 1 for each new sentence and increase by 1 "
           << "on each new token. Sentences are separated by an empty line.";
 
