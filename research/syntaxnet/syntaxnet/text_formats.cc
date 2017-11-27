@@ -117,7 +117,10 @@ class CoNLLSyntaxFormat : public DocumentFormat {
       std::string line = lines[i];
       utils::RemoveWhitespaceContextStr(line);
       fields = utils::Split(line, '\t');
-      if (fields.empty()) continue;
+      if (fields.empty()){
+        expected_id = 1;
+        continue;
+      }
 
       // Skip comment lines.
       if (fields[0][0] == '#') continue;
