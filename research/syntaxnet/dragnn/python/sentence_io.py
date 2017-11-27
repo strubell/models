@@ -54,12 +54,15 @@ class FormatSentenceReader(object):
           }
           """
     with self._graph.as_default():
+
       self._source, self._is_last = gen_parser_ops.document_source(
           task_context_str=task_context_str, batch_size=batch_size)
+
       if check_well_formed:
         self._source = gen_parser_ops.well_formed_filter(self._source)
       if projectivize:
         self._source = gen_parser_ops.projectivize_filter(self._source)
+
 
   def read(self):
     """Reads a single batch of sentences."""
@@ -68,6 +71,7 @@ class FormatSentenceReader(object):
       if is_last:
         self._session.close()
         self._session = None
+
     else:
       sentences, is_last = [], True
     return sentences, is_last

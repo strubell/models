@@ -166,6 +166,12 @@ def main(unused_argv):
       morph_to_pos=True).corpus()
   tune_set = ConllSentenceReader(
       tune_corpus_path, projectivize=False, morph_to_pos=True).corpus()
+  # training_set = ConllSentenceReader(
+  #     training_corpus_path,
+  #     projectivize=FLAGS.projectivize_training_set,
+  #     morph_to_pos=False).corpus()
+  # tune_set = ConllSentenceReader(
+  #     tune_corpus_path, projectivize=False, morph_to_pos=False).corpus()
 
   # Ready to train!
   logging.info('Training on %d sentences.', len(training_set))
