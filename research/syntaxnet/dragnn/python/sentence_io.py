@@ -74,7 +74,6 @@ class FormatSentenceReader(object):
 
     else:
       sentences, is_last = [], True
-    tf.logging.info("returning")
     return sentences, is_last
 
   def corpus(self):
@@ -82,9 +81,7 @@ class FormatSentenceReader(object):
     tf.logging.info('Reading corpus...')
     corpus = []
     while True:
-      # tf.logging.info("calling read")
       sentences, is_last = self.read()
-      # tf.logging.info(sentences)
       corpus.extend(sentences)
       if is_last:
         break
