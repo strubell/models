@@ -115,7 +115,7 @@ class CoNLLSyntaxFormat : public DocumentFormat {
       // Split line into tab-separated fields.
       fields.clear();
       std::string line = lines[i];
-      utils::RemoveWhitespaceContext(line);
+      utils::RemoveWhitespaceContextStr(line);
       fields = utils::Split(line, '\t');
       if (fields.empty()) continue;
 

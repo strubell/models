@@ -79,7 +79,7 @@ static inline void ltrim(std::string &text);
 
 static inline void rtrim(std::string &text);
 
-static inline void RemoveWhitespaceContext(std::string &text);
+static inline void RemoveWhitespaceContextStr(std::string &text);
 
 uint32 Hash32(const char *data, size_t n, uint32 seed);
 
