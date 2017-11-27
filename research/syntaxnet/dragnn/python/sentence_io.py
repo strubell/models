@@ -60,8 +60,10 @@ class FormatSentenceReader(object):
       self._is_last = tf.Print(self._is_last, [self._is_last], "self._is_last")
 
       if check_well_formed:
+        self._is_last = tf.Print(self._is_last, [self._is_last], "check well formed")
         self._source = gen_parser_ops.well_formed_filter(self._source)
       if projectivize:
+        self._is_last = tf.Print(self._is_last, [self._is_last], "projectivize")
         self._source = gen_parser_ops.projectivize_filter(self._source)
 
   def read(self):
