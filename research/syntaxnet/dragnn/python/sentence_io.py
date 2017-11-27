@@ -78,6 +78,7 @@ class FormatSentenceReader(object):
     corpus = []
     while True:
       sentences, is_last = self.read()
+      tf.loging.info(sentences)
       corpus.extend(sentences)
       if is_last:
         break
