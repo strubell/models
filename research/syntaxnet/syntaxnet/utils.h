@@ -75,9 +75,9 @@ size_t RemoveTrailingWhitespace(tensorflow::StringPiece *text);
 
 size_t RemoveWhitespaceContext(tensorflow::StringPiece *text);
 
-void ltrim(std::string &text);
+void RemoveLeadingWhitespaceStr(std::string &text);
 
-void rtrim(std::string &text);
+void RemoveTrailingWhitespaceStr(std::string &text);
 
 void RemoveWhitespaceContextStr(std::string &text);
 
