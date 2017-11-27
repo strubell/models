@@ -55,8 +55,7 @@ class FormatSentenceReader(object):
           """
     with self._graph.as_default():
 
-
-      tf.logging.info("in here")
+      batch_size = tf.Print(batch_size, [batch_size], "batch size")
       self._source, self._is_last = gen_parser_ops.document_source(
           task_context_str=task_context_str, batch_size=batch_size)
       if check_well_formed:
