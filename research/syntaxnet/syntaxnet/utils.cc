@@ -164,6 +164,22 @@ size_t RemoveTrailingWhitespace(tensorflow::StringPiece *text) {
   return count;
 }
 
+static inline void RemoveWhitespaceContext(std::string *text) {
+  ltrim(text);
+  rtrim(text);
+}
+
+static inline void ltrim(std::string &s) {
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(),
+            std::not1(std::ptr_fun<int, int>(std::isspace))));
+}
+
+// trim from end (in place)
+static inline void rtrim(std::string &s) {
+    s.erase(std::find_if(s.rbegin(), s.rend(),
+            std::not1(std::ptr_fun<int, int>(std::isspace))).base(), s.end());
+}
+
 size_t RemoveWhitespaceContext(tensorflow::StringPiece *text) {
   // use RemoveLeadingWhitespace() and RemoveTrailingWhitespace() to do the job
   return RemoveLeadingWhitespace(text) + RemoveTrailingWhitespace(text);
