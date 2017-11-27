@@ -114,7 +114,7 @@ class CoNLLSyntaxFormat : public DocumentFormat {
     for (size_t i = 0; i < lines.size(); ++i) {
       // Split line into tab-separated fields.
       fields.clear();
-      tensorflow::StringPiece *line = lines[i];
+      tensorflow::StringPiece *line = *lines[i];
       utils::RemoveWhitespaceContext(line);
       fields = utils::Split(lines[i], '\t');
       if (fields.empty()) continue;
