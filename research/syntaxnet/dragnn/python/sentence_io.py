@@ -73,6 +73,7 @@ class FormatSentenceReader(object):
     if self._session:
       tf.logging.info("calling session.run")
       sentences, is_last = self._session.run([self._source, self._is_last])
+      tf.logging.info("is_last ", is_last)
       if is_last:
         tf.logging.info("closing session")
         self._session.close()
