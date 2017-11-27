@@ -41,6 +41,7 @@ bool DoubleNewlineReadRecord(tensorflow::io::BufferedInputStream *buffer,
   while (!line.empty() && status.ok()) {
     tensorflow::strings::StrAppend(record, line, "\n");
     status = buffer->ReadLine(&line);
+    utils::RemoveWhitespaceContextStr(line);
   }
   return status.ok() || !record->empty();
 }
@@ -117,10 +118,7 @@ class CoNLLSyntaxFormat : public DocumentFormat {
       std::string line = lines[i];
       utils::RemoveWhitespaceContextStr(line);
       fields = utils::Split(line, '\t');
-      if (fields.empty()){
-        expected_id = 1;
-        continue;
-      }
+      if (fields.empty()) continue;
 
       // Skip comment lines.
       if (fields[0][0] == '#') continue;
