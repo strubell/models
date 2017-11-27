@@ -66,7 +66,6 @@ def main(argv):
       fml='stack.focus stack(1).focus',  # look for both stack tokens
       source_translator='shift-reduce-step',  # maps token indices -> step
       embedding_dim=32)  # project down to 32 dims
-
   parser.fill_from_resources(lexicon_dir)
 
   master_spec = spec_pb2.MasterSpec()
@@ -89,14 +88,12 @@ def main(argv):
   text_format.Merge(open(training_sentence).read(), sentence)
   training_set = [sentence.SerializeToString()]
 
-  print("session")
   with tf.Session(graph=graph) as sess:
     # Make sure to re-initialize all underlying state.
     sess.run(tf.initialize_all_variables())
     traces = sess.run(
         dry_run['traces'], feed_dict={dry_run['input_batch']: training_set})
 
-  print("write")
   with open('dragnn_tutorial_2.html', 'w') as f:
     f.write(
         visualization.trace_html(
