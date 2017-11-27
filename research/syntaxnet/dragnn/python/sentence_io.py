@@ -28,10 +28,9 @@ class FormatSentenceReader(object):
                check_well_formed=False,
                projectivize=False,
                morph_to_pos=False):
-    # adding these 2 lines fixed the hang forever problem
     self._graph = tf.Graph()
     self._session = tf.Session(graph=self._graph)
-    threads = tf.train.start_queue_runners(sess=self._session, coord=tf.train.Coordinator())
+    # threads = tf.train.start_queue_runners(sess=self._session, coord=tf.train.Coordinator())
     task_context_str = """
           input {
             name: 'documents'
