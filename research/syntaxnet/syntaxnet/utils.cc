@@ -180,8 +180,8 @@ void RemoveTrailingWhitespaceStr(std::string &text) {
 }
 
 void RemoveWhitespaceContextStr(std::string &text) {
-  ltrim(text);
-  rtrim(text);
+  RemoveTrailingWhitespaceStr(text);
+  RemoveLeadingWhitespaceStr(text);
 }
 
 namespace {
