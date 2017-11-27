@@ -61,7 +61,6 @@ class FormatSentenceReader(object):
       if projectivize:
         self._source = gen_parser_ops.projectivize_filter(self._source)
 
-
   def read(self):
     """Reads a single batch of sentences."""
     if self._session:
@@ -69,7 +68,6 @@ class FormatSentenceReader(object):
       if is_last:
         self._session.close()
         self._session = None
-
     else:
       sentences, is_last = [], True
     return sentences, is_last
