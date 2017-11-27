@@ -78,6 +78,7 @@ class FormatSentenceReader(object):
         self._session = None
     else:
       sentences, is_last = [], True
+    tf.logging.info("returning")
     return sentences, is_last
 
   def corpus(self):
