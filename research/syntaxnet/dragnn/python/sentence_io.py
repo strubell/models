@@ -65,6 +65,8 @@ class FormatSentenceReader(object):
       if projectivize:
         self._is_last = tf.Print(self._is_last, [self._is_last], "projectivize")
         self._source = gen_parser_ops.projectivize_filter(self._source)
+      self._is_last = tf.Print(self._is_last, [self._is_last], "returning")
+
 
   def read(self):
     """Reads a single batch of sentences."""
