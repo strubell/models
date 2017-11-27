@@ -169,13 +169,13 @@ static inline void RemoveWhitespaceContext(std::string &text) {
   rtrim(text);
 }
 
-static inline void ltrim(std::string &s) {
+static inline void ltrim(std::string &text) {
     s.erase(s.begin(), std::find_if(s.begin(), s.end(),
             std::not1(std::ptr_fun<int, int>(std::isspace))));
 }
 
 // trim from end (in place)
-static inline void rtrim(std::string &s) {
+static inline void rtrim(std::string &text) {
     s.erase(std::find_if(s.rbegin(), s.rend(),
             std::not1(std::ptr_fun<int, int>(std::isspace))).base(), s.end());
 }
