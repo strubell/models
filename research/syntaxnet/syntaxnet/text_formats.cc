@@ -115,7 +115,7 @@ class CoNLLSyntaxFormat : public DocumentFormat {
       // Split line into tab-separated fields.
       fields.clear();
       string &line = lines[i];
-      utils::RemoveWhitespaceContext(line)
+      utils::RemoveWhitespaceContext(line);
       fields = utils::Split(lines[i], '\t');
       if (fields.empty()) continue;
 
