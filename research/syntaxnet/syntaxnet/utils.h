@@ -75,10 +75,11 @@ size_t RemoveTrailingWhitespace(tensorflow::StringPiece *text);
 
 size_t RemoveWhitespaceContext(tensorflow::StringPiece *text);
 
+static inline void ltrim(std::string &text);
 
-static inline void ltrim(std::string &s);
-static inline void rtrim(std::string &s);
-static inline void RemoveWhitespaceContext(std::string *text);
+static inline void rtrim(std::string &text);
+
+static inline void RemoveWhitespaceContext(std::string &text);
 
 uint32 Hash32(const char *data, size_t n, uint32 seed);
 

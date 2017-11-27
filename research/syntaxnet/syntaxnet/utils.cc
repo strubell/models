@@ -164,7 +164,7 @@ size_t RemoveTrailingWhitespace(tensorflow::StringPiece *text) {
   return count;
 }
 
-static inline void RemoveWhitespaceContext(std::string *text) {
+static inline void RemoveWhitespaceContext(std::string &text) {
   ltrim(text);
   rtrim(text);
 }
