@@ -152,11 +152,11 @@ def run_training(sess, trainers, annotator, evaluator, pretrain_steps,
     checkpoint_stats[target_idx + 1] += 1
     if step % 100 == 0:
       # costs_str = ' '.join(map(lambda c: '%g' % (c/100.), running_costs))
-      costs_str = ' '.join(["%5.5f"] * len(trainers)) % tuple(map(lambda l: l / step, running_costs))
+      costs_str = ' '.join(["%5.5f"] * len(trainers)) % tuple(map(lambda l: l / actual_step, running_costs))
       tf.logging.info('Training step: %d, actual: %d; %20d examples at %5.2f examples/sec. Avg cost: %s',
                       step, actual_step + step, running_examples, running_examples/running_time, costs_str)
     if step % report_every == 0:
-      costs_str = ' '.join(["%5.5f"] * len(trainers)) % tuple(map(lambda l: l / step, running_costs))
+      costs_str = ' '.join(["%5.5f"] * len(trainers)) % tuple(map(lambda l: l / actual_step, running_costs))
       tf.logging.info('Finished step: %d, actual: %d; %20d examples at %5.2f examples/sec. Avg cost: %s',
                       step, actual_step + step, running_examples, running_examples/running_time, costs_str)
       running_examples = 0.
