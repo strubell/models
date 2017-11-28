@@ -19,8 +19,8 @@ Provides functions to finish a MasterSpec, building required lexicons for it and
 adding them as resources, as well as setting features sizes.
 """
 
+import time
 import random
-
 
 import tensorflow as tf
 from tensorflow.core.framework.summary_pb2 import Summary
@@ -83,8 +83,9 @@ def get_summary_writer(tensorboard_dir):
 def run_training_step(sess, trainer, train_corpus, batch_size):
   """Runs a single iteration of train_op on a randomly sampled batch."""
   batch = random.sample(train_corpus, batch_size)
+  start_time = time.time()
   _, cost = sess.run([trainer['run'], trainer['cost']], feed_dict={trainer['input_batch']: batch})
-  return cost
+  return cost, batch_size, time.time() - start_time
 
 
 def run_training(sess, trainers, annotator, evaluator, pretrain_steps,
@@ -141,15 +142,25 @@ def run_training(sess, trainers, annotator, evaluator, pretrain_steps,
   tf.logging.info('Starting training...')
   actual_step = sum(checkpoint_stats[1:])
   running_costs = [0.]*len(trainers)
+  running_time = 0.
+  running_examples = 0.
   for step, target_idx in enumerate(target_for_step):
-    running_costs[target_idx] += run_training_step(sess, trainers[target_idx], train_corpus, batch_size)
+    cost, examples, clock_time = run_training_step(sess, trainers[target_idx], train_corpus, batch_size)
+    running_costs[target_idx] += cost
+    running_examples += examples
+    running_time += clock_time
     checkpoint_stats[target_idx + 1] += 1
     if step % 100 == 0:
-      costs_str = ' '.join(map(lambda c: '%g' % (c/100.), running_costs))
-      tf.logging.info('training step: %d, actual: %d, avg cost: %s', step, actual_step + step, costs_str)
-      running_costs = [0.] * len(target_for_step)
+      # costs_str = ' '.join(map(lambda c: '%g' % (c/100.), running_costs))
+      costs_str = ' '.join(["%5.5f"] * len(trainers)) % tuple(map(lambda l: l / step, running_costs))
+      tf.logging.info('Training step: %d, actual: %d; %20d examples at %5.2f examples/sec. Avg cost: %s',
+                      step, actual_step + step, running_examples, running_examples/running_time, costs_str)
     if step % report_every == 0:
-      # tf.logging.info('finished step: %d, actual: %d', step, actual_step + step)
+      costs_str = ' '.join(["%5.5f"] * len(trainers)) % tuple(map(lambda l: l / step, running_costs))
+      tf.logging.info('Finished step: %d, actual: %d; %20d examples at %5.2f examples/sec. Avg cost: %s',
+                      step, actual_step + step, running_examples, running_examples/running_time, costs_str)
+      running_examples = 0.
+      running_time = 0.
 
       annotated = annotate_dataset(sess, annotator, eval_corpus)
       summaries = evaluator(eval_gold, annotated)
