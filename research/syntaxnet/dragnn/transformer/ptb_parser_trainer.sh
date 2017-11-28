@@ -20,7 +20,7 @@ batch_size=64
 # bazel build -c opt //dragnn/tools:trainer //dragnn/conll2017:make_parser_spec
 
 mkdir -p $output_dir
-bazel-bin/dragnn/conll2017/make_parser_spec \
+bazel-bin/dragnn/transformer/make_parser_spec \
   --spec_file="$output_dir/parser_spec.textproto"
 
 bazel-bin/dragnn/tools/trainer \

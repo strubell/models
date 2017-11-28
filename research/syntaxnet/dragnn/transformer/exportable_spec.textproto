@@ -1,0 +1,399 @@
+component {
+  name: "features"
+  transition_system {
+    registered_name: "shift-only"
+    parameters {
+      key: "parser_skip_deterministic"
+      value: "false"
+    }
+  }
+  resource {
+    name: "constant_words-embedding-input"
+    part {
+      file_pattern: "/cns/lg-d/home/danielandor/e/pairwise-conv-parser-exportable/constant-embeddings.embeddings/converted"
+      file_format: "tf-records"
+      record_format: "syntaxnet.TokenEmbedding"
+    }
+  }
+  resource {
+    name: "constant_words-vocab-input"
+    part {
+      file_pattern: "/cns/lg-d/home/danielandor/e/pairwise-conv-parser-exportable/constant-embeddings.vocabulary/vocabulary"
+      file_format: "text"
+      record_format: ""
+    }
+  }
+  resource {
+    name: "words-embedding-input"
+    part {
+      file_pattern: "/cns/lg-d/home/danielandor/e/pairwise-conv-parser-exportable/trainable-embeddings.embeddings/converted"
+      file_format: "tf-records"
+      record_format: "syntaxnet.TokenEmbedding"
+    }
+  }
+  resource {
+    name: "words-vocab-input"
+    part {
+      file_pattern: "/cns/lg-d/home/danielandor/e/pairwise-conv-parser-exportable/trainable-embeddings.vocabulary/vocabulary"
+      file_format: "text"
+      record_format: ""
+    }
+  }
+  resource {
+    name: "char-ngram-map"
+    part {
+      file_pattern: "/cns/lg-d/home/danielandor/e/pairwise-conv-parser-exportable/lexicon/char-ngram-map"
+      file_format: "text"
+      record_format: ""
+    }
+  }
+  resource {
+    name: "known-word-map"
+    part {
+      file_pattern: "/cns/lg-d/home/danielandor/e/pairwise-conv-parser-exportable/constant-embeddings.word-map/term-frequency-map"
+      file_format: "text"
+      record_format: ""
+    }
+  }
+  resource {
+    name: "word-map"
+    part {
+      file_pattern: "/cns/lg-d/home/danielandor/e/pairwise-conv-parser-exportable/trainable-embeddings.word-map/term-frequency-map"
+      file_format: "text"
+      record_format: ""
+    }
+  }
+  resource {
+    name: "label-map"
+    part {
+      file_pattern: "/cns/lg-d/home/danielandor/e/pairwise-conv-parser-exportable/lexicon/label-map"
+      file_format: "text"
+      record_format: ""
+    }
+  }
+  fixed_feature {
+    name: "char_ngram"
+    fml: "input.char-bigram"
+    embedding_dim: 16
+    vocabulary_size: 13253
+    size: 1
+  }
+  fixed_feature {
+    name: "constant_words"
+    fml: "input.token.known-word(outside=false)"
+    embedding_dim: 128
+    vocabulary_size: 38403
+    size: 1
+    pretrained_embedding_matrix {
+      part {
+        file_pattern: "/readahead/512M/cns/lg-d/home/danielandor/e/pairwise-conv-parser-exportable/constant-embeddings.embeddings/converted"
+      }
+    }
+    vocab {
+      part {
+        file_pattern: "/cns/lg-d/home/danielandor/e/pairwise-conv-parser-exportable/constant-embeddings.vocabulary/vocabulary"
+        file_format: "text"
+      }
+    }
+    is_constant: true
+  }
+  fixed_feature {
+    name: "words"
+    fml: "input.token.word"
+    embedding_dim: 64
+    vocabulary_size: 38405
+    size: 1
+    pretrained_embedding_matrix {
+      part {
+        file_pattern: "/readahead/512M/cns/lg-d/home/danielandor/e/pairwise-conv-parser-exportable/trainable-embeddings.embeddings/converted"
+      }
+    }
+    vocab {
+      part {
+        file_pattern: "/cns/lg-d/home/danielandor/e/pairwise-conv-parser-exportable/trainable-embeddings.vocabulary/vocabulary"
+        file_format: "text"
+      }
+    }
+  }
+  network_unit {
+    registered_name: "IdentityNetwork"
+  }
+  backend {
+    registered_name: "SyntaxNetComponent"
+  }
+  num_actions: 1
+  attention_component: ""
+  component_builder {
+    registered_name: "bulk_component.BulkFeatureExtractorComponentBuilder"
+  }
+}
+component {
+  name: "tagger_convnet"
+  transition_system {
+    registered_name: "shift-only"
+    parameters {
+      key: "parser_skip_deterministic"
+      value: "false"
+    }
+  }
+  resource {
+    name: "label-map"
+    part {
+      file_pattern: "/cns/lg-d/home/danielandor/e/pairwise-conv-parser-exportable/lexicon/label-map"
+      file_format: "text"
+      record_format: ""
+    }
+  }
+  linked_feature {
+    name: "fixed-features"
+    fml: "input.focus"
+    embedding_dim: -1
+    size: 1
+    source_component: "features"
+    source_translator: "identity"
+    source_layer: "input_embeddings"
+  }
+  network_unit {
+    registered_name: "ConvNetwork"
+    parameters {
+      key: "depths"
+      value: "128,128,128,128"
+    }
+    parameters {
+      key: "output_embedding_dim"
+      value: "0"
+    }
+    parameters {
+      key: "widths"
+      value: "3,3,3,3"
+    }
+  }
+  backend {
+    registered_name: "StatelessComponent"
+  }
+  num_actions: 1
+  attention_component: ""
+  component_builder {
+    registered_name: "bulk_component.BulkFeatureExtractorComponentBuilder"
+  }
+}
+component {
+  name: "token_embeddings"
+  transition_system {
+    registered_name: "shift-only"
+    parameters {
+      key: "parser_skip_deterministic"
+      value: "false"
+    }
+  }
+  resource {
+    name: "lexifuse-repository"
+    part {
+      file_pattern: "/cns/lg-d/home/danielandor/e/pairwise-conv-parser-exportable/lexifuse.lexifuse-repository/repository"
+      file_format: "repository"
+      record_format: "entity"
+    }
+  }
+  resource {
+    name: "brain-parser-model"
+    part {
+      file_pattern: "/cns/lg-d/home/danielandor/e/pairwise-conv-parser-exportable/dragnn-parser.token-embeddings.model-init/brain-parser-model"
+      file_format: "model"
+      record_format: ""
+    }
+  }
+  resource {
+    name: "transition-system-data"
+    part {
+      file_pattern: "/cns/lg-d/home/danielandor/e/pairwise-conv-parser-exportable/dragnn-parser.token-embeddings.model-init/transition-system-data"
+      file_format: "model"
+      record_format: ""
+    }
+  }
+  linked_feature {
+    name: "features"
+    fml: "input.focus"
+    embedding_dim: -1
+    size: 1
+    source_component: "features"
+    source_translator: "identity"
+    source_layer: "input_embeddings"
+  }
+  linked_feature {
+    name: "tagger-convnet"
+    fml: "input.focus"
+    embedding_dim: -1
+    size: 1
+    source_component: "tagger_convnet"
+    source_translator: "identity"
+    source_layer: "conv_output"
+  }
+  network_unit {
+    registered_name: "IdentityNetwork"
+  }
+  backend {
+    registered_name: "StatelessComponent"
+  }
+  num_actions: 1
+  attention_component: ""
+  component_builder {
+    registered_name: "bulk_component.BulkFeatureExtractorComponentBuilder"
+  }
+  training_beam_size: 1
+  inference_beam_size: 1
+}
+component {
+  name: "parser_convnet"
+  transition_system {
+    registered_name: "shift-only"
+    parameters {
+      key: "parser_skip_deterministic"
+      value: "false"
+    }
+  }
+  resource {
+    name: "label-map"
+    part {
+      file_pattern: "/cns/lg-d/home/danielandor/e/pairwise-conv-parser-exportable/lexicon/label-map"
+      file_format: "text"
+      record_format: ""
+    }
+  }
+  linked_feature {
+    name: "sources"
+    fml: "input.focus"
+    embedding_dim: -1
+    size: 1
+    source_component: "token_embeddings"
+    source_translator: "identity"
+    source_layer: "input_embeddings"
+  }
+  linked_feature {
+    name: "targets"
+    fml: "input.focus"
+    embedding_dim: -1
+    size: 1
+    source_component: "token_embeddings"
+    source_translator: "identity"
+    source_layer: "input_embeddings"
+  }
+  network_unit {
+    registered_name: "PairwiseConvNetwork"
+    parameters {
+      key: "bias_init"
+      value: "0.01,0.0,0.0,0.0,0.0,0.0,0.0,0.0"
+    }
+    parameters {
+      key: "depths"
+      value: "256,256,256,256,256,256,256,45"
+    }
+    parameters {
+      key: "dropout"
+      value: "0.66,1.0,1.0,1.0,1.0,1.0,1.0,0.66"
+    }
+    parameters {
+      key: "initialization"
+      value: "varscale,identity,identity,identity,identity,identity,identity,identity"
+    }
+    parameters {
+      key: "widths"
+      value: "3,3,3,3,3,3,3,3"
+    }
+  }
+  backend {
+    registered_name: "StatelessComponent"
+  }
+  num_actions: 1
+  attention_component: ""
+  component_builder {
+    registered_name: "bulk_component.BulkFeatureExtractorComponentBuilder"
+  }
+}
+component {
+  name: "tagger"
+  transition_system {
+    registered_name: "tagger"
+    parameters {
+      key: "join_category_to_pos"
+      value: "true"
+    }
+    parameters {
+      key: "parser_skip_deterministic"
+      value: "false"
+    }
+  }
+  resource {
+    name: "tag-map"
+    part {
+      file_pattern: "/cns/lg-d/home/danielandor/e/pairwise-conv-parser-exportable/lexicon/tag-map"
+      file_format: "text"
+      record_format: ""
+    }
+  }
+  resource {
+    name: "label-map"
+    part {
+      file_pattern: "/cns/lg-d/home/danielandor/e/pairwise-conv-parser-exportable/lexicon/label-map"
+      file_format: "text"
+      record_format: ""
+    }
+  }
+  linked_feature {
+    name: "tagger-convnet"
+    fml: "input.focus"
+    embedding_dim: -1
+    size: 1
+    source_component: "tagger_convnet"
+    source_translator: "identity"
+    source_layer: "conv_output"
+  }
+  network_unit {
+    registered_name: "FeedForwardNetwork"
+  }
+  backend {
+    registered_name: "SyntaxNetComponent"
+  }
+  num_actions: 45
+  attention_component: ""
+  component_builder {
+    registered_name: "bulk_component.BulkAnnotatorComponentBuilder"
+  }
+}
+component {
+  name: "parser"
+  transition_system {
+    registered_name: "heads_labels"
+    parameters {
+      key: "parser_skip_deterministic"
+      value: "false"
+    }
+  }
+  resource {
+    name: "label-map"
+    part {
+      file_pattern: "/cns/lg-d/home/danielandor/e/pairwise-conv-parser-exportable/lexicon/label-map"
+      file_format: "text"
+      record_format: ""
+    }
+  }
+  linked_feature {
+    name: "parser-convnet"
+    fml: "input.focus"
+    embedding_dim: -1
+    size: 1
+    source_component: "parser_convnet"
+    source_translator: "identity"
+    source_layer: "conv_output"
+  }
+  network_unit {
+    registered_name: "IdentityNetwork"
+  }
+  backend {
+    registered_name: "SyntaxNetComponent"
+  }
+  num_actions: -1
+  attention_component: ""
+  component_builder {
+    registered_name: "bulk_component.BulkAnnotatorComponentBuilder"
+  }
+}
