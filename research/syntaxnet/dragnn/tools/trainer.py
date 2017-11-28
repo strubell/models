@@ -69,6 +69,8 @@ flags.DEFINE_string('tune_corpus_path', '', 'Path to tuning set data.')
 
 flags.DEFINE_bool('compute_lexicon', False, '')
 flags.DEFINE_bool('projectivize_training_set', True, '')
+flags.DEFINE_bool('morph_to_pos', True, '')
+
 
 flags.DEFINE_integer('batch_size', 4, 'Batch size.')
 flags.DEFINE_integer('report_every', 200,
@@ -163,9 +165,9 @@ def main(unused_argv):
   training_set = ConllSentenceReader(
       training_corpus_path,
       projectivize=FLAGS.projectivize_training_set,
-      morph_to_pos=True).corpus()
+      morph_to_pos=FLAGS.morph_to_pos).corpus()
   tune_set = ConllSentenceReader(
-      tune_corpus_path, projectivize=False, morph_to_pos=True).corpus()
+      tune_corpus_path, projectivize=False, morph_to_pos=FLAGS.morph_to_pos).corpus()
 
   # Ready to train!
   logging.info('Training on %d sentences.', len(training_set))
