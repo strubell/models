@@ -7,7 +7,7 @@ name=$1
 additional_args=${@:2}
 
 # PTB-specific defs
-name="ptb"
+#name="ptb"
 data_dir="$DATA_DIR/wsj-parse-3.5.0"
 training_corpus="$data_dir/wsj02-21-trn.sdep.spos.gold.conllu"
 dev_corpus="$data_dir/wsj22-dev.sdep.spos.gold.conllu"
