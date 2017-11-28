@@ -140,7 +140,7 @@ def run_training(sess, trainers, annotator, evaluator, pretrain_steps,
   best_eval_metric = -1.0
   tf.logging.info('Starting training...')
   actual_step = sum(checkpoint_stats[1:])
-  running_costs = [0.]*len(target_for_step)
+  running_costs = [0.]*len(trainers)
   for step, target_idx in enumerate(target_for_step):
     running_costs[target_idx] += run_training_step(sess, trainers[target_idx], train_corpus, batch_size)
     checkpoint_stats[target_idx + 1] += 1
