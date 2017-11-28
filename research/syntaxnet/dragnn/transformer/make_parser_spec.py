@@ -53,11 +53,16 @@ def main(unused_argv):
   head_size=64
   cnn_dim=1024
   num_cnn_layers=2
-  # TODO set this properly
-  heads_ff_size = 256
-  # TODO set this properly
-  deps_ff_size = 256
+  heads_ff_size = 500
+  deps_ff_size = 100
   transformer_total_dim = num_heads * head_size
+
+  # todo:
+  # - leaky relu
+  # - batching
+  # - lazyadam
+  # - initilaize with glove embeddings
+  # - add learned and fixed embeddings, concat with pos
 
 
   # Extract input features
@@ -74,11 +79,9 @@ def main(unused_argv):
   convnet.set_network_unit(name='ConvNetwork', depths='1024,1024', output_embedding_dim='0', widths='3,3')
   convnet.add_link(source=input_feats, source_layer='input_embeddings', fml='input.focus', embedding_dim='-1', size='1')
 
-  # TODO set this properly
-  ff1_hidden_sizes = ','.join(map(str, [cnn_dim, transformer_total_dim]))
   ff1 = BulkComponentSpecBuilder('ff1', backend='StatelessComponent')
   ff1.set_transition_system('shift-only')
-  ff1.set_network_unit(name='FeedForwardNetwork', hidden_layer_sizes=ff1_hidden_sizes, omit_logits='true')
+  ff1.set_network_unit(name='FeedForwardNetwork', hidden_layer_sizes=str(transformer_total_dim), omit_logits='true')
   ff1.add_link(source=convnet, source_layer='conv_output', fml='input.focus')
 
   # Transformer layers
@@ -88,16 +91,14 @@ def main(unused_argv):
                                hidden_size=str(transformer_hidden_size), num_heads=str(num_heads))
   transformer.add_link(source=ff1, source_layer='last_layer', fml='input.focus')
 
-  heads_ff_hidden_sizes = ','.join(map(str, [transformer_total_dim, heads_ff_size]))
   heads_ff = BulkComponentSpecBuilder('heads_ff', backend='StatelessComponent')
   heads_ff.set_transition_system('shift-only')
-  heads_ff.set_network_unit(name='FeedForwardNetwork', hidden_layer_sizes=heads_ff_hidden_sizes)
+  heads_ff.set_network_unit(name='FeedForwardNetwork', hidden_layer_sizes=str(heads_ff_size))
   heads_ff.add_link(source=transformer, source_layer='transformer_output')
 
-  deps_ff_hidden_sizes = ','.join(map(str, [transformer_total_dim, deps_ff_size]))
   deps_ff = BulkComponentSpecBuilder('deps_ff', backend='StatelessComponent')
   deps_ff.set_transition_system('shift-only')
-  deps_ff.set_network_unit(name='FeedForwardNetwork', hidden_layer_sizes=deps_ff_hidden_sizes)
+  deps_ff.set_network_unit(name='FeedForwardNetwork', hidden_layer_sizes=str(deps_ff_size))
   deps_ff.add_link(source=transformer, source_layer='transformer_output')
 
   bilinear = BulkComponentSpecBuilder('bilinear', backend='StatelessComponent')
