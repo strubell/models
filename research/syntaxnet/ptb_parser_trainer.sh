@@ -2,6 +2,10 @@
 
 set -e
 
+name=$1
+
+additional_args=${@:2}
+
 # PTB-specific defs
 name="ptb"
 data_dir="$DATA_DIR/wsj-parse-3.5.0"
@@ -29,4 +33,5 @@ bazel-bin/dragnn/tools/trainer \
   --tensorboard_dir="$output_dir/tensorboard" \
   --checkpoint_filename="$output_dir/checkpoint.model" \
   --morph_to_pos=$morph_to_pos \
-  --batch_size=$batch_size
+  --batch_size=$batch_size \
+  $additional_args
