@@ -149,7 +149,7 @@ def run_training(sess, trainers, annotator, evaluator, pretrain_steps,
       tf.logging.info('training step: %d, actual: %d, avg cost: %s', step, actual_step + step, costs_str)
       running_costs = [0.] * len(target_for_step)
     if step % report_every == 0:
-      tf.logging.info('finished step: %d, actual: %d', step, actual_step + step)
+      # tf.logging.info('finished step: %d, actual: %d', step, actual_step + step)
 
       annotated = annotate_dataset(sess, annotator, eval_corpus)
       summaries = evaluator(eval_gold, annotated)
