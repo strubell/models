@@ -669,5 +669,5 @@ class MasterBuilder(object):
     logging.info('Saving variables:\n\t%s',
                  '\n\t'.join([x.name for x in tf.global_variables()]))
     self.saver = tf.train.Saver(
-        var_list=[x for x in tf.global_variables()],
-        write_version=saver_pb2.SaverDef.V1)
+        var_list=[x for x in tf.global_variables()])
+        # write_version=saver_pb2.SaverDef.V1)
