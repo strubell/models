@@ -10,6 +10,7 @@ dev_corpus="$data_dir/wsj22-dev.sdep.spos.conllu"
 
 output_parent="trained"
 output_dir="$output_parent/$name"
+morph_to_pos=False
 
 # bazel build -c opt //dragnn/tools:trainer //dragnn/conll2017:make_parser_spec
 
@@ -25,4 +26,5 @@ bazel-bin/dragnn/tools/trainer \
   --training_corpus_path="$training_corpus" \
   --tune_corpus_path="$dev_corpus" \
   --tensorboard_dir="$output_dir/tensorboard" \
-  --checkpoint_filename="$output_dir/checkpoint.model"
+  --checkpoint_filename="$output_dir/checkpoint.model" \
+  --morph_to_pos=$morph_to_pos
