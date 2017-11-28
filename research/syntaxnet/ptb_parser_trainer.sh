@@ -5,8 +5,8 @@ set -e
 # PTB-specific defs
 name="ptb"
 data_dir="$DATA_DIR/wsj-parse-3.5.0"
-training_corpus="$data_dir/wsj02-21-trn.sdep.spos.conllu"
-dev_corpus="$data_dir/wsj22-dev.sdep.spos.conllu"
+training_corpus="$data_dir/wsj02-21-trn.sdep.spos.gold.conllu"
+dev_corpus="$data_dir/wsj22-dev.sdep.spos.gold.conllu"
 
 output_parent="trained"
 output_dir="$output_parent/$name"
