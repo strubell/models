@@ -145,7 +145,7 @@ def run_training(sess, trainers, annotator, evaluator, pretrain_steps,
     running_costs[target_idx] += run_training_step(sess, trainers[target_idx], train_corpus, batch_size)
     checkpoint_stats[target_idx + 1] += 1
     if step % 100 == 0:
-      costs_str = ' '.join(map(lambda c: '%g' % c/100, running_costs))
+      costs_str = ' '.join(map(lambda c: '%g' % (c/100.), running_costs))
       tf.logging.info('training step: %d, actual: %d, avg cost: %s', step, actual_step + step, costs_str)
       running_costs = [0.] * len(target_for_step)
     if step % report_every == 0:
