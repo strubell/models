@@ -83,7 +83,8 @@ def get_summary_writer(tensorboard_dir):
 def run_training_step(sess, trainer, train_corpus, batch_size):
   """Runs a single iteration of train_op on a randomly sampled batch."""
   batch = random.sample(train_corpus, batch_size)
-  sess.run(trainer['run'], feed_dict={trainer['input_batch']: batch})
+  _, cost = sess.run([trainer['run'], trainer['cost']], feed_dict={trainer['input_batch']: batch})
+  return cost
 
 
 def run_training(sess, trainers, annotator, evaluator, pretrain_steps,
@@ -139,11 +140,14 @@ def run_training(sess, trainers, annotator, evaluator, pretrain_steps,
   best_eval_metric = -1.0
   tf.logging.info('Starting training...')
   actual_step = sum(checkpoint_stats[1:])
+  running_costs = [0.]*len(target_for_step)
   for step, target_idx in enumerate(target_for_step):
-    run_training_step(sess, trainers[target_idx], train_corpus, batch_size)
+    running_costs[target_idx] += run_training_step(sess, trainers[target_idx], train_corpus, batch_size)
     checkpoint_stats[target_idx + 1] += 1
     if step % 100 == 0:
-      tf.logging.info('training step: %d, actual: %d', step, actual_step + step)
+      costs_str = ' '.join(map(lambda c: '%g' % c/100, running_costs))
+      tf.logging.info('training step: %d, actual: %d, avg cost: %s', step, actual_step + step, costs_str)
+      running_costs = [0.] * len(target_for_step)
     if step % report_every == 0:
       tf.logging.info('finished step: %d, actual: %d', step, actual_step + step)
 
