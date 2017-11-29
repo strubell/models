@@ -45,6 +45,24 @@ class BulkComponentSpecBuilder(spec_builder.ComponentSpecBuilder):
             component_builder=self.make_module(builder))
 
 
+class BulkFeatureIdComponentSpecBuilder(spec_builder.ComponentSpecBuilder):
+    def __init__(self,
+                 name,
+                 builder='bulk_component.BulkFeatureIdExtractorComponentBuilder',
+                 backend='SyntaxNetComponent'):
+        """Initializes the ComponentSpec with some defaults for SyntaxNet.
+
+        Args:
+          name: The name of this Component in the pipeline.
+          builder: The component builder type.
+          backend: The component backend type.
+        """
+        self.spec = spec_pb2.ComponentSpec(
+            name=name,
+            backend=self.make_module(backend),
+            component_builder=self.make_module(builder))
+
+
 def main(unused_argv):
 
   num_transformer_layers=4
@@ -75,7 +93,7 @@ def main(unused_argv):
   input_feats.add_fixed_feature(name='pos_tag', embedding_dim=100, fml='input.tag')
   input_feats.add_fixed_feature(name='char_bigram', embedding_dim=16, fml='input.char-bigram')
 
-  lengths = BulkComponentSpecBuilder('lengths')
+  lengths = BulkFeatureIdComponentSpecBuilder('lengths')
   lengths.set_network_unit('ExportFixedFeaturesNetwork')
   lengths.set_transition_system('shift-only')
   lengths.add_fixed_feature(name='lengths', fml='sentence.length')
