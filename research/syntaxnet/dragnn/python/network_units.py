@@ -778,7 +778,7 @@ class NetworkUnitInterface(object):
         source = component.master.lookup_component[spec.source_component]
         source_array_dim = source.network.get_layer_size(spec.source_layer)
 
-      if spec.embedding_dim != -1:
+      if spec.embedding_dim > 0:
         check.Gt(source_array_dim, 0,
                  'Cannot embed linked feature with dynamic dimension')
         self._params.append(
