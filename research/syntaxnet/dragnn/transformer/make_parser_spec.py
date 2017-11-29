@@ -56,6 +56,7 @@ def main(unused_argv):
   heads_ff_size = 500
   deps_ff_size = 100
   transformer_total_dim = num_heads * head_size
+  num_classes = 44
 
   # todo:
   # - set dropouts properly
@@ -104,7 +105,7 @@ def main(unused_argv):
 
   bilinear = BulkComponentSpecBuilder('bilinear', backend='StatelessComponent')
   bilinear.set_transition_system('shift-only')
-  bilinear.set_network_unit(name='transformer_units.PairwiseBilinearLabelNetwork')
+  bilinear.set_network_unit(name='transformer_units.PairwiseBilinearLabelNetwork', num_labels=str(num_classes))
   bilinear.add_link(source=heads_ff, name='sources', fml='input.focus')
   bilinear.add_link(source=deps_ff, name='targets', fml='input.focus')
 
