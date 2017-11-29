@@ -96,7 +96,7 @@ def main(unused_argv):
   lengths = BulkFeatureIdComponentSpecBuilder('lengths')
   lengths.set_network_unit('ExportFixedFeaturesNetwork')
   lengths.set_transition_system('shift-only')
-  lengths.add_fixed_feature(name='lengths', fml='sentence.length', embedding_dim='-1')
+  lengths.add_fixed_feature(name='lengths', fml='sentence.length', embedding_dim=-1)
 
   # Embed tokens with CNN before passing representations to transformer
   convnet = BulkComponentSpecBuilder('convnet', backend='StatelessComponent')
