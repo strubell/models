@@ -115,7 +115,7 @@ def main(unused_argv):
 
   master_spec = spec_pb2.MasterSpec()
   master_spec.component.extend(
-      [input_feats.spec, convnet.spec, ff1.spec, transformer.spec, heads_ff.spec, deps_ff.spec, parser.spec])
+      [input_feats.spec, convnet.spec, ff1.spec, transformer.spec, heads_ff.spec, deps_ff.spec, bilinear.spec, parser.spec])
 
 
   # token_embeddings = BulkComponentSpecBuilder('token_embeddings', backend='StatelessComponent')
