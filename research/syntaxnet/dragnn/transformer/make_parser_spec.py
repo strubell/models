@@ -99,7 +99,7 @@ def main(unused_argv):
                                hidden_size=str(transformer_hidden_size),
                                num_heads=str(num_heads))
   transformer.add_link(source=ff1, source_layer='last_layer', fml='input.focus')
-  transformer.add_link(source=lengths, source_layer='lengths', fml='input.focus')
+  transformer.add_link(source=lengths, source_layer='input_embeddings', fml='input.focus')
 
 
   heads_ff = BulkComponentSpecBuilder('heads_ff', backend='StatelessComponent')
