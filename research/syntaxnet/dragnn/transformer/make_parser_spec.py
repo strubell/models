@@ -75,6 +75,11 @@ def main(unused_argv):
   input_feats.add_fixed_feature(name='pos_tag', embedding_dim=100, fml='input.tag')
   input_feats.add_fixed_feature(name='char_bigram', embedding_dim=16, fml='input.char-bigram')
 
+  lengths = BulkComponentSpecBuilder('input_feats')
+  lengths.set_network_unit('IdentityNetwork')
+  lengths.set_transition_system('shift-only')
+  lengths.add_fixed_feature(name='lengths', fml='input.lengths')
+
   # Embed tokens with CNN before passing representations to transformer
   convnet = BulkComponentSpecBuilder('convnet', backend='StatelessComponent')
   convnet.set_transition_system('shift-only')
@@ -92,6 +97,8 @@ def main(unused_argv):
   transformer.set_network_unit(name='transformer_units.TransformerEncoderNetwork', num_layers=str(num_transformer_layers),
                                hidden_size=str(transformer_hidden_size), num_heads=str(num_heads))
   transformer.add_link(source=ff1, source_layer='last_layer', fml='input.focus')
+  transformer.add_link(source=lengths, source_layer='lengths', fml='input.focus')
+
 
   heads_ff = BulkComponentSpecBuilder('heads_ff', backend='StatelessComponent')
   heads_ff.set_transition_system('shift-only')
@@ -109,6 +116,7 @@ def main(unused_argv):
   bilinear.add_link(source=heads_ff, name='sources', fml='input.focus')
   bilinear.add_link(source=deps_ff, name='targets', fml='input.focus')
 
+
   parser = BulkComponentSpecBuilder('parser')
   parser.set_network_unit('IdentityNetwork')
   parser.set_transition_system('heads_labels')
@@ -116,7 +124,7 @@ def main(unused_argv):
 
   master_spec = spec_pb2.MasterSpec()
   master_spec.component.extend(
-      [input_feats.spec, convnet.spec, ff1.spec, transformer.spec, heads_ff.spec, deps_ff.spec, bilinear.spec, parser.spec])
+      [input_feats.spec, lengths.spec, convnet.spec, ff1.spec, transformer.spec, heads_ff.spec, deps_ff.spec, bilinear.spec, parser.spec])
 
 
   # token_embeddings = BulkComponentSpecBuilder('token_embeddings', backend='StatelessComponent')
