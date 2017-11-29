@@ -116,7 +116,7 @@ def main(unused_argv):
                                num_layers=str(num_transformer_layers),
                                hidden_size=str(transformer_hidden_size),
                                num_heads=str(num_heads))
-  transformer.add_link(source=ff1, source_layer='last_layer', fml='input.focus')
+  transformer.add_link(source=ff1, source_layer='last_layer', name='features', fml='input.focus')
   transformer.add_link(source=lengths, source_layer='lengths', fml='input.focus')
 
 
