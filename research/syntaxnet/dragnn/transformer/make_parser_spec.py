@@ -76,7 +76,7 @@ def main(unused_argv):
   input_feats.add_fixed_feature(name='char_bigram', embedding_dim=16, fml='input.char-bigram')
 
   lengths = BulkComponentSpecBuilder('lengths')
-  lengths.set_network_unit('IdentityNetwork')
+  lengths.set_network_unit('ExportFixedFeaturesNetwork')
   lengths.set_transition_system('shift-only')
   lengths.add_fixed_feature(name='lengths', fml='sentence.length')
 
@@ -99,7 +99,7 @@ def main(unused_argv):
                                hidden_size=str(transformer_hidden_size),
                                num_heads=str(num_heads))
   transformer.add_link(source=ff1, source_layer='last_layer', fml='input.focus')
-  transformer.add_link(source=lengths, source_layer='input_embeddings', fml='input.focus')
+  transformer.add_link(source=lengths, source_layer='length', fml='input.focus')
 
 
   heads_ff = BulkComponentSpecBuilder('heads_ff', backend='StatelessComponent')
