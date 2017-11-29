@@ -77,7 +77,7 @@ def main(unused_argv):
   # Embed tokens with CNN before passing representations to transformer
   convnet = BulkComponentSpecBuilder('convnet', backend='StatelessComponent')
   convnet.set_transition_system('shift-only')
-  convnet.set_network_unit(name='ConvNetwork', depths='1024,1024', widths='3,3', embedding_dim=-1)
+  convnet.set_network_unit(name='ConvNetwork', depths='1024,1024', widths='3,3', embedding_dim='-1')
   convnet.add_link(source=input_feats, source_layer='input_embeddings', fml='input.focus')
 
   ff1 = BulkComponentSpecBuilder('ff1', backend='StatelessComponent')
