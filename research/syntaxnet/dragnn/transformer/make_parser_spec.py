@@ -109,6 +109,7 @@ def main(unused_argv):
   bilinear.add_link(source=deps_ff, name='targets', fml='input.focus')
 
   parser = BulkComponentSpecBuilder('parser')
+  parser.set_network_unit('IdentityNetwork')
   parser.set_transition_system('heads_labels')
   parser.add_link(source=bilinear, source_layer='bilinear_scores', fml='input.focus')
 
