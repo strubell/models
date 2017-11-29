@@ -78,7 +78,7 @@ def main(unused_argv):
   convnet = BulkComponentSpecBuilder('convnet', backend='StatelessComponent')
   convnet.set_transition_system('shift-only')
   convnet.set_network_unit(name='ConvNetwork', depths='1024,1024', output_embedding_dim='0', widths='3,3')
-  convnet.add_link(source=input_feats, source_layer='input_embeddings', fml='input.focus', embedding_dim=-1, size=1)
+  convnet.add_link(source=input_feats, source_layer='input_embeddings', fml='input.focus')
 
   ff1 = BulkComponentSpecBuilder('ff1', backend='StatelessComponent')
   ff1.set_transition_system('shift-only')
