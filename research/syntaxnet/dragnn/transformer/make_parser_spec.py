@@ -88,7 +88,7 @@ def main(unused_argv):
   # Transformer layers
   transformer = BulkComponentSpecBuilder('transformer', backend='StatelessComponent')
   transformer.set_transition_system('shift-only')
-  transformer.set_network_unit(name='transformer_units.TransformerNetwork', num_layers=str(num_transformer_layers),
+  transformer.set_network_unit(name='transformer_units.TransformerEncoderNetwork', num_layers=str(num_transformer_layers),
                                hidden_size=str(transformer_hidden_size), num_heads=str(num_heads))
   transformer.add_link(source=ff1, source_layer='last_layer', fml='input.focus')
 
