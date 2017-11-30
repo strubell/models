@@ -174,7 +174,7 @@ def dot_product_attention(queries, keys, values, dropout_keep_rate, bias=None):
     A Tensor with shape [batch, heads, seq_len, depth_values].
   """
   # [batch, num_heads, seq_len, seq_len]
-  logits = tf.matmul(queries, keys, transpose_b=True)
+  logits = tf.matmul(queries, keys, transpose_b=True, name="transformer_attn_logits")
   if bias is not None:
     logits += bias
 
@@ -184,7 +184,7 @@ def dot_product_attention(queries, keys, values, dropout_keep_rate, bias=None):
   attn_weights = network_units.maybe_apply_dropout(attn_weights,
                                                    dropout_keep_rate,
                                                    False)
-  return tf.matmul(attn_weights, values)
+  return tf.matmul(attn_weights, values, name="transformer_attn_result")
 
 
 def residual(old_input, new_input, dropout_keep_rate, layer_norm):
@@ -549,10 +549,10 @@ class PairwiseBilinearLabelNetwork(network_units.NetworkUnitInterface):
                          "be called in a bulk component.")
 
     sources = network_units.lookup_named_tensor('sources', linked_embeddings)
-    sources_tensor = tf.reshape(sources.tensor, [stride, -1, self._source_dim])
+    sources_tensor = tf.reshape(sources.tensor, [stride, -1, self._source_dim], name="bilinear_sources")
 
     targets = network_units.lookup_named_tensor('targets', linked_embeddings)
-    targets_tensor = tf.reshape(targets.tensor, [stride, -1, self._target_dim])
+    targets_tensor = tf.reshape(targets.tensor, [stride, -1, self._target_dim], name="bilinear_targets")
 
     # Dimensions: source_dim x num_labels x target_dim
     bilinear_params = self._component.get_variable('bilinear')
@@ -581,4 +581,4 @@ class PairwiseBilinearLabelNetwork(network_units.NetworkUnitInterface):
     scores = tf.transpose(bilin, [0, 2, 1])
 
     return [tf.reshape(scores, [-1, num_steps*self._num_labels],
-                       name='reshape_activations')]
+                       name='reshape_bilinear_activations')]
