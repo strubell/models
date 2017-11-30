@@ -79,7 +79,7 @@ flags.DEFINE_integer('job_id', 0, 'The trainer will clear checkpoints if the '
                      'saved job id is less than the id this flag. If you want '
                      'training to start over, increment this id.')
 
-
+non_target_transition_systems = {'shift_only', 'once'}
 
 def main(unused_argv):
   logging.set_verbosity(logging.INFO)
@@ -154,7 +154,7 @@ def main(unused_argv):
             max_index=idx + 1,
             unroll_using_oracle=[False] * idx + [True])
         for idx, component in enumerate(master_spec.component)
-        if 'shift-only' not in component.transition_system.registered_name and 'once' not in component.transition_system.registered_name
+        if component.transition_system.registered_name not in non_target_transition_systems
     ]
     trainers = [
         builder.add_training_from_config(target) for target in component_targets
