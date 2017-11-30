@@ -27,58 +27,23 @@ FLAGS = flags.FLAGS
 flags.DEFINE_string('spec_file', 'parser_spec.textproto',
                     'Filename to save the spec to.')
 
-# todo call super
+
 class BulkComponentSpecBuilder(spec_builder.ComponentSpecBuilder):
-    def __init__(self,
-                 name,
-                 builder='bulk_component.BulkFeatureExtractorComponentBuilder',
-                 backend='SyntaxNetComponent'):
-        """Initializes the ComponentSpec with some defaults for SyntaxNet.
+  def __init__(self, name, backend='SyntaxNetComponent'):
+    builder = 'bulk_component.BulkFeatureExtractorComponentBuilder'
+    super(BulkComponentSpecBuilder, self).__init__(name, builder, backend)
 
-        Args:
-          name: The name of this Component in the pipeline.
-          builder: The component builder type.
-          backend: The component backend type.
-        """
-        self.spec = spec_pb2.ComponentSpec(
-            name=name,
-            backend=self.make_module(backend),
-            component_builder=self.make_module(builder))
 
-# todo call super
 class BulkFeatureIdComponentSpecBuilder(spec_builder.ComponentSpecBuilder):
-    def __init__(self,
-                 name,
-                 builder='bulk_component.BulkFeatureIdExtractorComponentBuilder',
-                 backend='SyntaxNetComponent'):
-        """Initializes the ComponentSpec with some defaults for SyntaxNet.
+  def __init__(self, name, backend='SyntaxNetComponent'):
+    builder = 'bulk_component.BulkFeatureIdExtractorComponentBuilder'
+    super(BulkFeatureIdComponentSpecBuilder, self).__init__(name, builder, backend)
 
-        Args:
-          name: The name of this Component in the pipeline.
-          builder: The component builder type.
-          backend: The component backend type.
-        """
-        self.spec = spec_pb2.ComponentSpec(
-            name=name,
-            backend=self.make_module(backend),
-            component_builder=self.make_module(builder))
 
 class BulkAnnotatorComponentSpecBuilder(spec_builder.ComponentSpecBuilder):
-    def __init__(self,
-                 name,
-                 builder='bulk_component.BulkAnnotatorComponentBuilder',
-                 backend='SyntaxNetComponent'):
-        """Initializes the ComponentSpec with some defaults for SyntaxNet.
-
-        Args:
-          name: The name of this Component in the pipeline.
-          builder: The component builder type.
-          backend: The component backend type.
-        """
-        self.spec = spec_pb2.ComponentSpec(
-            name=name,
-            backend=self.make_module(backend),
-            component_builder=self.make_module(builder))
+  def __init__(self, name, backend='SyntaxNetComponent'):
+    builder = 'bulk_component.BulkAnnotatorComponentBuilder'
+    super(BulkAnnotatorComponentSpecBuilder, self).__init__(name, builder, backend)
 
 
 def main(unused_argv):
@@ -140,12 +105,12 @@ def main(unused_argv):
   # ff heads representation
   heads_ff = BulkComponentSpecBuilder('heads_ff', backend='StatelessComponent')
   heads_ff.set_transition_system('shift-only')
-  heads_ff.set_network_unit(name='FeedForwardNetwork', hidden_layer_sizes=str(heads_ff_size))
+  heads_ff.set_network_unit(name='FeedForwardNetwork', hidden_layer_sizes=str(heads_ff_size), omit_logits='true')
   heads_ff.add_link(source=transformer, source_layer='transformer_output')
 
   deps_ff = BulkComponentSpecBuilder('deps_ff', backend='StatelessComponent')
   deps_ff.set_transition_system('shift-only')
-  deps_ff.set_network_unit(name='FeedForwardNetwork', hidden_layer_sizes=str(deps_ff_size))
+  deps_ff.set_network_unit(name='FeedForwardNetwork', hidden_layer_sizes=str(deps_ff_size), omit_logits='true')
   deps_ff.add_link(source=transformer, source_layer='transformer_output')
 
   bilinear = BulkComponentSpecBuilder('bilinear', backend='StatelessComponent')
