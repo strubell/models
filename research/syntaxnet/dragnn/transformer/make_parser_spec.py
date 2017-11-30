@@ -139,7 +139,7 @@ def main(unused_argv):
 
 
   parser = BulkComponentSpecBuilder('parser')
-  parser.set_network_unit('IdentityNetwork')
+  parser.set_network_unit(name='IdentityNetwork')
   parser.set_transition_system('heads_labels')
   parser.add_link(source=bilinear, source_layer='bilinear_scores', fml='input.focus')
 
