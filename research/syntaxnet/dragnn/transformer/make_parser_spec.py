@@ -63,6 +63,23 @@ class BulkFeatureIdComponentSpecBuilder(spec_builder.ComponentSpecBuilder):
             backend=self.make_module(backend),
             component_builder=self.make_module(builder))
 
+class BulkAnnotatorComponentSpecBuilder(spec_builder.ComponentSpecBuilder):
+    def __init__(self,
+                 name,
+                 builder='bulk_component.BulkAnnotatorComponentBuilder',
+                 backend='SyntaxNetComponent'):
+        """Initializes the ComponentSpec with some defaults for SyntaxNet.
+
+        Args:
+          name: The name of this Component in the pipeline.
+          builder: The component builder type.
+          backend: The component backend type.
+        """
+        self.spec = spec_pb2.ComponentSpec(
+            name=name,
+            backend=self.make_module(backend),
+            component_builder=self.make_module(builder))
+
 
 def main(unused_argv):
 
@@ -138,7 +155,7 @@ def main(unused_argv):
   bilinear.add_link(source=deps_ff, name='targets', fml='input.focus')
 
 
-  parser = BulkComponentSpecBuilder('parser')
+  parser = BulkAnnotatorComponentSpecBuilder('parser')
   parser.set_network_unit(name='IdentityNetwork')
   parser.set_transition_system('heads_labels')
   parser.add_link(source=bilinear, source_layer='bilinear_scores', fml='input.focus')
