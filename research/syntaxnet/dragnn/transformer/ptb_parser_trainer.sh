@@ -11,7 +11,8 @@ additional_args=${@:2}
 data_dir="$DATA_DIR/wsj-parse-3.5.0"
 training_corpus="$data_dir/wsj02-21-trn.sdep.spos.gold.conllu"
 dev_corpus="$data_dir/wsj22-dev.sdep.spos.gold.conllu"
-embeddings="$DATA_DIR/embeddings/glove/glove.6B.100d.txt"
+embeddings="$DATA_DIR/embeddings/glove/glove.6B.100d.floats.txt"
+vocab="$DATA_DIR/embeddings/glove/glove.6B.100d.vocab.txt"
 
 output_parent="trained"
 output_dir="$output_parent/$name"

@@ -85,7 +85,7 @@ def main(unused_argv):
     embedding_part.file_pattern = FLAGS.embeddings_file
 
     vocab_resource = spec_pb2.Resource()
-    vocab_part = embeddings_resource.part.add()
+    vocab_part = vocab_resource.part.add()
     vocab_part.file_pattern = FLAGS.embeddings_vocab
     # embedding_part.file_format = ''
     # embedding_part.record_format = ''
