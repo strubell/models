@@ -79,9 +79,9 @@ def main(unused_argv):
   input_feats.add_fixed_feature(name='char_bigram', embedding_dim=16, fml='input.char-bigram')
   if FLAGS.embeddings_file != '':
     input_feats.add_fixed_feature(name='fixed_embedding', embedding_dim=100,
-                                  fml='input.token.known-word(outside=false)',
-                                  pretrained_embedding_matrix=FLAGS.embeddings_file,
-                                  is_constant=True)
+                                  fml='input.token.known-word(outside=false)') #,
+                                  # pretrained_embedding_matrix=FLAGS.embeddings_file,
+                                  # is_constant=True)
 
 
 
