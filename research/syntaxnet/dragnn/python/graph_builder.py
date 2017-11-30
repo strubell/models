@@ -472,6 +472,8 @@ class MasterBuilder(object):
     # Restore that subsequent builds don't use average by default.
     self.read_from_avg = False
 
+    cost = tf.Print(cost, [cost], "cost")
+
     cost = tf.check_numerics(cost, message='Cost is not finite.')
 
     # Returns named access to common outputs.
