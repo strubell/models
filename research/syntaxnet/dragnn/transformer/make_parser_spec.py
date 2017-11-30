@@ -80,7 +80,7 @@ def main(unused_argv):
   if FLAGS.embeddings_file != '':
     input_feats.add_fixed_feature(name='fixed_embedding', embedding_dim=100,
                                   fml='input.token.word',
-                                  pretrained_embedding_matrix=FLAGS.embeddings_file,
+                                  pretrained_embedding_matrix=FLAGS.embeddings_file)
                                   # fml='input.token.known-word(outside=false)'),
                                   # pretrained_embedding_matrix=FLAGS.embeddings_file,
                                   # is_constant=True)
