@@ -454,7 +454,7 @@ class MasterBuilder(object):
       grads_and_vars = self.optimizer.compute_gradients(
           cost, var_list=params_to_train)
 
-      logging.info(str(grads_and_vars))
+      logging.info(str(zip(*grads_and_vars)[0]))
       clipped_gradients = [(self._clip_gradients(g), v)
                            for g, v in grads_and_vars]
       minimize_op = self.optimizer.apply_gradients(
