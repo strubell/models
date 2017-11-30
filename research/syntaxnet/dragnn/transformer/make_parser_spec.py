@@ -79,7 +79,7 @@ def main(unused_argv):
   input_feats.add_fixed_feature(name='char_bigram', embedding_dim=16, fml='input.char-bigram')
   if FLAGS.embeddings_file != '':
     embeddings_resource = spec_pb2.Resource()
-    embedding_part = embeddings_resource.parts.add()
+    embedding_part = embeddings_resource.part.add()
     embedding_part.file_pattern = FLAGS.embeddings_file
     # embedding_part.file_format = ''
     # embedding_part.record_format = ''
