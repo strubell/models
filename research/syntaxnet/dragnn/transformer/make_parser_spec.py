@@ -27,6 +27,7 @@ FLAGS = flags.FLAGS
 flags.DEFINE_string('spec_file', 'parser_spec.textproto',
                     'Filename to save the spec to.')
 
+# todo call super
 class BulkComponentSpecBuilder(spec_builder.ComponentSpecBuilder):
     def __init__(self,
                  name,
@@ -44,7 +45,7 @@ class BulkComponentSpecBuilder(spec_builder.ComponentSpecBuilder):
             backend=self.make_module(backend),
             component_builder=self.make_module(builder))
 
-
+# todo call super
 class BulkFeatureIdComponentSpecBuilder(spec_builder.ComponentSpecBuilder):
     def __init__(self,
                  name,
@@ -119,7 +120,7 @@ def main(unused_argv):
   transformer.add_link(source=ff1, source_layer='last_layer', name='features', fml='input.focus')
   transformer.add_link(source=lengths, source_layer='lengths', fml='input.focus')
 
-
+  # ff heads representation
   heads_ff = BulkComponentSpecBuilder('heads_ff', backend='StatelessComponent')
   heads_ff.set_transition_system('shift-only')
   heads_ff.set_network_unit(name='FeedForwardNetwork', hidden_layer_sizes=str(heads_ff_size))

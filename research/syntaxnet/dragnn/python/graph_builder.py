@@ -590,7 +590,7 @@ class MasterBuilder(object):
     """
     logging.info('Creating new training target '
                  '%s'
-                 ' from config: %s', target_config.name, str(target_config))
+                 ' from config: %s (trace_only: %r)', target_config.name, str(target_config), trace_only)
     scope_id = prefix + target_config.name
     with tf.name_scope(scope_id):
       # Construct training targets. Disable tracing during training.
