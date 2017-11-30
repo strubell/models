@@ -28,6 +28,8 @@ flags.DEFINE_string('spec_file', 'parser_spec.textproto',
                     'Filename to save the spec to.')
 flags.DEFINE_string('embeddings_file', '',
                     'File containing pre-trained word embeddings')
+flags.DEFINE_string('embeddings_vocab', '',
+                    'File containing pre-trained word embedding vocab')
 
 
 class BulkComponentSpecBuilder(spec_builder.ComponentSpecBuilder):
@@ -81,11 +83,17 @@ def main(unused_argv):
     embeddings_resource = spec_pb2.Resource()
     embedding_part = embeddings_resource.part.add()
     embedding_part.file_pattern = FLAGS.embeddings_file
+
+    vocab_resource = spec_pb2.Resource()
+    vocab_part = embeddings_resource.part.add()
+    vocab_part.file_pattern = FLAGS.embeddings_vocab
     # embedding_part.file_format = ''
     # embedding_part.record_format = ''
     input_feats.add_fixed_feature(name='fixed_embedding', embedding_dim=100,
                                   fml='input.token.word',
-                                  pretrained_embedding_matrix=embeddings_resource)
+                                  pretrained_embedding_matrix=embeddings_resource,
+                                  is_constant=True,
+                                  vocab=vocab_resource)
                                   # fml='input.token.known-word(outside=false)'),
                                   # pretrained_embedding_matrix=FLAGS.embeddings_file,
                                   # is_constant=True)
