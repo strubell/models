@@ -11,6 +11,7 @@ additional_args=${@:2}
 data_dir="$DATA_DIR/wsj-parse-3.5.0"
 training_corpus="$data_dir/wsj02-21-trn.sdep.spos.gold.conllu"
 dev_corpus="$data_dir/wsj22-dev.sdep.spos.gold.conllu"
+embeddings="$DATA_DIR/embeddings/glove/glove.6B.100d.txt"
 
 output_parent="trained"
 output_dir="$output_parent/$name"
@@ -21,7 +22,8 @@ batch_size=64
 
 mkdir -p $output_dir
 bazel-bin/dragnn/transformer/make_parser_spec \
-  --spec_file="$output_dir/parser_spec.textproto"
+  --spec_file="$output_dir/parser_spec.textproto" \
+  --embeddings_file=$embeddings
 
 bazel-bin/dragnn/tools/trainer \
   --logtostderr \

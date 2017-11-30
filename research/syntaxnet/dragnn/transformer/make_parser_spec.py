@@ -26,6 +26,8 @@ FLAGS = flags.FLAGS
 
 flags.DEFINE_string('spec_file', 'parser_spec.textproto',
                     'Filename to save the spec to.')
+flags.DEFINE_string('embeddings_file', '',
+                    'File containing pre-trained word embeddings')
 
 
 class BulkComponentSpecBuilder(spec_builder.ComponentSpecBuilder):
@@ -75,6 +77,13 @@ def main(unused_argv):
   input_feats.add_fixed_feature(name='learned_embedding', embedding_dim=100, fml='input.token.word')
   input_feats.add_fixed_feature(name='pos_tag', embedding_dim=100, fml='input.tag')
   input_feats.add_fixed_feature(name='char_bigram', embedding_dim=16, fml='input.char-bigram')
+  if FLAGS.embeddings_file != '':
+    input_feats.add_fixed_feature(name='fixed_embedding', embedding_dim=100,
+                                  fml='input.token.known-word(outside=false)',
+                                  pretrained_embedding_matrix=FLAGS.embedding_file,
+                                  is_constant='true')
+
+
 
   lengths = BulkFeatureIdComponentSpecBuilder('lengths')
   lengths.set_network_unit('ExportFixedFeaturesNetwork')
