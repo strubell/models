@@ -153,7 +153,7 @@ def main(unused_argv):
             max_index=idx + 1,
             unroll_using_oracle=[False] * idx + [True])
         for idx, component in enumerate(master_spec.component)
-        if 'shift-only' not in component.transition_system.registered_name
+        if 'shift-only' not in component.transition_system.registered_name and 'once' not in component.transition_system.registered_name
     ]
     trainers = [
         builder.add_training_from_config(target) for target in component_targets
