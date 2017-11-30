@@ -422,6 +422,7 @@ class TransformerEncoderNetwork(network_units.NetworkUnitInterface):
 
     # For masking padding in attention
     mask = compute_padding_mask(lengths_s)
+    mask = tf.Print(mask, [tf.shape(mask), tf.shape(lengths_s)], "mask shape")
 
     conv = tf.nn.conv2d(input_tensor,
                         self._component.get_variable('init_proj'),
