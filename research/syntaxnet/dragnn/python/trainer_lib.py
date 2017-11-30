@@ -83,6 +83,7 @@ def get_summary_writer(tensorboard_dir):
 def run_training_step(sess, trainer, train_corpus, batch_size):
   """Runs a single iteration of train_op on a randomly sampled batch."""
   batch = random.sample(train_corpus, batch_size)
+  print(batch)
   start_time = time.time()
   _, cost = sess.run([trainer['run'], trainer['cost']], feed_dict={trainer['input_batch']: batch})
   return cost, batch_size, time.time() - start_time
