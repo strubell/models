@@ -80,6 +80,7 @@ flags.DEFINE_integer('job_id', 0, 'The trainer will clear checkpoints if the '
                      'training to start over, increment this id.')
 
 
+
 def main(unused_argv):
   logging.set_verbosity(logging.INFO)
   check.IsTrue(FLAGS.checkpoint_filename)
