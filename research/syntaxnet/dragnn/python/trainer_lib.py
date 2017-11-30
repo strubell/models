@@ -87,6 +87,7 @@ def run_training_step(sess, trainer, train_corpus, batch_size):
   """Runs a single iteration of train_op on a randomly sampled batch."""
   batch = random.sample(train_corpus, batch_size)
   for b in batch:
+    print(b)
     print(text_format.Parse(b, sentence_pb2.Sentence))
   start_time = time.time()
   _, cost = sess.run([trainer['run'], trainer['cost']], feed_dict={trainer['input_batch']: batch})
