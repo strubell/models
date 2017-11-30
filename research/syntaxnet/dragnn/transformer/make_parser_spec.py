@@ -78,9 +78,14 @@ def main(unused_argv):
   input_feats.add_fixed_feature(name='pos_tag', embedding_dim=100, fml='input.tag')
   input_feats.add_fixed_feature(name='char_bigram', embedding_dim=16, fml='input.char-bigram')
   if FLAGS.embeddings_file != '':
+    embeddings_resource = spec_pb2.Resource()
+    embedding_part = embeddings_resource.parts.add()
+    embedding_part.file_pattern = FLAGS.embeddings_file
+    # embedding_part.file_format = ''
+    # embedding_part.record_format = ''
     input_feats.add_fixed_feature(name='fixed_embedding', embedding_dim=100,
                                   fml='input.token.word',
-                                  pretrained_embedding_matrix=FLAGS.embeddings_file)
+                                  pretrained_embedding_matrix=embeddings_resource)
                                   # fml='input.token.known-word(outside=false)'),
                                   # pretrained_embedding_matrix=FLAGS.embeddings_file,
                                   # is_constant=True)
