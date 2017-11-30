@@ -52,10 +52,17 @@ flags.DEFINE_string('tf_master', '',
                     'TensorFlow execution engine to connect to.')
 flags.DEFINE_string('dragnn_spec', '', 'Path to the spec defining the model.')
 flags.DEFINE_string('resource_path', '', 'Path to constructed resources.')
+# flags.DEFINE_string('hyperparams',
+#                     'adam_beta1:0.9 adam_beta2:0.9 adam_eps:0.00001 '
+#                     'decay_steps:128000 dropout_rate:0.8 gradient_clip_norm:1 '
+#                     'learning_method:"adam" learning_rate:0.0005 seed:1 '
+#                     'use_moving_average:true',
+#                     'Hyperparameters of the model to train, either in ProtoBuf'
+#                     'text format or base64-encoded ProtoBuf text format.')
 flags.DEFINE_string('hyperparams',
-                    'adam_beta1:0.9 adam_beta2:0.9 adam_eps:0.00001 '
+                    'momentum:0.9 '
                     'decay_steps:128000 dropout_rate:0.8 gradient_clip_norm:1 '
-                    'learning_method:"adam" learning_rate:0.0005 seed:1 '
+                    'learning_method:"sgd" learning_rate:0.004 seed:1 '
                     'use_moving_average:true',
                     'Hyperparameters of the model to train, either in ProtoBuf'
                     'text format or base64-encoded ProtoBuf text format.')
