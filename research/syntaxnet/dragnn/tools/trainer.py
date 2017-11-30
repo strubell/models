@@ -62,7 +62,7 @@ flags.DEFINE_string('resource_path', '', 'Path to constructed resources.')
 flags.DEFINE_string('hyperparams',
                     'momentum:0.9 '
                     'decay_steps:128000 dropout_rate:0.8 gradient_clip_norm:1 '
-                    'learning_method:"sgd" learning_rate:0.004 seed:1 '
+                    'learning_method:"momentum" learning_rate:0.004 seed:1 '
                     'use_moving_average:true',
                     'Hyperparameters of the model to train, either in ProtoBuf'
                     'text format or base64-encoded ProtoBuf text format.')
