@@ -83,10 +83,13 @@ def main(unused_argv):
     embeddings_resource = spec_pb2.Resource()
     embedding_part = embeddings_resource.part.add()
     embedding_part.file_pattern = FLAGS.embeddings_file
+    embedding_part.file_format = 'text'
+
 
     vocab_resource = spec_pb2.Resource()
     vocab_part = vocab_resource.part.add()
     vocab_part.file_pattern = FLAGS.embeddings_vocab
+    vocab_part.file_format = 'text'
     # embedding_part.file_format = ''
     # embedding_part.record_format = ''
     input_feats.add_fixed_feature(name='fixed_embedding', embedding_dim=100,
