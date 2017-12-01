@@ -34,11 +34,13 @@ def main(unused_argv):
   write_vocab_to_file = FLAGS.vocab_file != ''
   vocab = []
 
+  max_to_read = 5
+
   tf.logging.info("Loading pretrained embeddings from: %s" % FLAGS.text_embeddings_file)
   tf.logging.info("Writing converted embeddings to: %s" % FLAGS.proto_embeddings_file)
   with open(FLAGS.text_embeddings_file, 'r') as f, \
           tf.python_io.TFRecordWriter(FLAGS.proto_embeddings_file) as w:
-    for line in f:
+    for i, line in enumerate(f):
       split_line = line.split(' ')
       token = split_line[0]
       embedding = map(float, split_line[1:])
@@ -49,6 +51,8 @@ def main(unused_argv):
       w.write(str(token_embedding))
       if write_vocab_to_file:
         vocab.append(token)
+      if i == max_to_read:
+        break
 
   if write_vocab_to_file:
     tf.logging.info("Writing pretrained embedding vocabulary to: %s" % FLAGS.vocab_file)
@@ -59,6 +63,7 @@ def main(unused_argv):
   file_queue = tf.train.string_input_producer([FLAGS.proto_embeddings_file])
   reader = tf.TFRecordReader()
   _, record = reader.read(file_queue)
+  print(record)
   proto = dictionary_pb2.TokenEmbedding()
   print(proto.ParseFromString(record))
 
