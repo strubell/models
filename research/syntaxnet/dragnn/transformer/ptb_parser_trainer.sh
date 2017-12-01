@@ -33,7 +33,7 @@ batch_size=64
 mkdir -p $output_dir
 
 # if embeddings proto doesn't exist, make it
-if [[ -ne $embeddings_tfrecord_proto ]]; then
+if ! [[ -e "$embeddings_tfrecord_proto" ]]; then
     bazel-bin/dragnn/transformer/convet_embeddings_for_syntaxnet \
       --proto_embeddings_file=$embeddings_tfrecord_proto \
       --text_embeddings_file=$embeddings \
