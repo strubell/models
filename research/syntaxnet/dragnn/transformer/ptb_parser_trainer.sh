@@ -24,7 +24,8 @@ batch_size=64
 mkdir -p $output_dir
 bazel-bin/dragnn/transformer/make_parser_spec \
   --spec_file="$output_dir/parser_spec.textproto" \
-  --embeddings_file=$embeddings
+  --embeddings_file=$embeddings \
+  --embeddings_vocab=$vocab
 
 bazel-bin/dragnn/tools/trainer \
   --logtostderr \
