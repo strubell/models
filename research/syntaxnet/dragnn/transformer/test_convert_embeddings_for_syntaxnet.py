@@ -64,7 +64,7 @@ def main(unused_argv):
   reader = tf.TFRecordReader()
   key, record = reader.read(file_queue)
   print(key, record)
-  print(tf.parse_tensor(record))
+  print(tf.parse_tensor(record, tf.string))
   proto = dictionary_pb2.TokenEmbedding()
   print(proto.ParseFromString(record))
 
