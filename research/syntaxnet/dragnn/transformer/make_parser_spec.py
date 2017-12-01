@@ -93,7 +93,7 @@ def main(unused_argv):
                                   fml='input.token.word',
                                   pretrained_embedding_matrix=embeddings_resource,
                                   is_constant=True,
-                                  vocab=vocab_resource)
+                                  vocabulary=vocab_resource)
                                   # fml='input.token.known-word(outside=false)'),
                                   # pretrained_embedding_matrix=FLAGS.embeddings_file,
                                   # is_constant=True)
