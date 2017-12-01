@@ -49,7 +49,7 @@ def main(unused_argv):
       token_embedding = dictionary_pb2.TokenEmbedding()
       token_embedding.token = token
       token_embedding.vector.values.extend(embedding)
-      w.write(str(token_embedding))
+      w.write(token_embedding.SerializeToString())
       # token_embeddings.append(token_embedding)
       if write_vocab_to_file:
         vocab.append(token)
