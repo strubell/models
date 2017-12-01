@@ -63,7 +63,7 @@ class ProtoRecordReader {
     string buffer;
     tensorflow::Status status = reader_->ReadRecord(&offset_, &buffer);
     if (status.ok()) {
-      CHECK(proto->ParseFromString(buffer));
+      CHECK(proto->ParseFromString(buffer)) << " " << buffer;
       return tensorflow::Status::OK();
     } else {
       CHECK_EQ(status.code(), tensorflow::error::OUT_OF_RANGE)
