@@ -42,11 +42,11 @@ def main(unused_argv):
       split_line = line.split(' ')
       token = split_line[0]
       embedding = map(float, split_line[1:])
+      assert token != ''
       token_embedding = dictionary_pb2.TokenEmbedding()
       token_embedding.token = token
       token_embedding.vector.values.extend(embedding)
       w.write(str(token_embedding))
-      print(str(token_embedding))
       if write_vocab_to_file:
         vocab.append(token)
 
