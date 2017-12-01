@@ -29,9 +29,10 @@ flags.DEFINE_string('proto_embeddings_file', '',
 flags.DEFINE_string('vocab_file', '',
                     'File to write vocab to. No vocab written if this is the empty string.')
 
-def main(unused_argv):
+tf.logging.set_verbosity(tf.logging.INFO)
 
-  tf.logging.set_verbosity(tf.logging.INFO)
+
+def main(unused_argv):
 
   write_vocab_to_file = FLAGS.vocab_file != ''
   vocab = []
@@ -40,7 +41,6 @@ def main(unused_argv):
   tf.logging.info("Writing converted embeddings to: %s" % FLAGS.proto_embeddings_file)
   with open(FLAGS.text_embeddings_file, 'r') as f, \
           tf.python_io.TFRecordWriter(FLAGS.proto_embeddings_file) as w:
-    # token_embeddings = []
     for line in f:
       split_line = line.split(' ')
       token = split_line[0]
@@ -50,10 +50,8 @@ def main(unused_argv):
       token_embedding.token = token
       token_embedding.vector.values.extend(embedding)
       w.write(token_embedding.SerializeToString())
-      # token_embeddings.append(token_embedding)
       if write_vocab_to_file:
         vocab.append(token)
-    # w.write(str(token_embeddings))
 
   if write_vocab_to_file:
     tf.logging.info("Writing pretrained embedding vocabulary to: %s" % FLAGS.vocab_file)
