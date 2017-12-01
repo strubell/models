@@ -31,6 +31,8 @@ flags.DEFINE_string('vocab_file', '',
 
 def main(unused_argv):
 
+  tf.logging.set_verbosity(tf.logging.INFO)
+
   write_vocab_to_file = FLAGS.vocab_file != ''
   vocab = []
 
