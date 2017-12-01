@@ -20,7 +20,6 @@ from tensorflow.python.platform import gfile
 
 from dragnn.protos import spec_pb2
 from dragnn.python import spec_builder
-from syntaxnet import dictionary_pb2
 
 flags = tf.app.flags
 FLAGS = flags.FLAGS
@@ -75,23 +74,6 @@ def main(unused_argv):
   # - initilaize with glove embeddings
   # - add learned and fixed embeddings, concat with pos
 
-  embeddings_proto_fname = "embeddings_tfrecord_proto"
-
-  # load word embeddings to tfrecords
-  # todo split this out into a separate file w/ a helper function
-  if FLAGS.embeddings_file != '':
-    with open(FLAGS.embeddings_file, 'r') as f, \
-            tf.python_io.TFRecordWriter(embeddings_proto_fname) as w:
-      for line in f:
-        split_line = line.split(' ')
-        token = split_line[0]
-        embedding = map(float, split_line[1:])
-        token_embedding = dictionary_pb2.TokenEmbedding()
-        token_embedding.token = token
-        token_embedding.vector.values.extend(embedding)
-        w.write(token_embedding.SerializeAsString())
-
-
   # Extract input features
   input_feats = BulkComponentSpecBuilder('input_feats')
   input_feats.set_network_unit('IdentityNetwork')
@@ -109,7 +91,7 @@ def main(unused_argv):
     embeddings_resource = spec_pb2.Resource()
     embedding_part = embeddings_resource.part.add()
     # todo pass this in
-    embedding_part.file_pattern = embeddings_proto_fname
+    embedding_part.file_pattern = FLAGS.embeddings_file
 
     input_feats.add_fixed_feature(name='fixed_embedding', embedding_dim=100,
                                   fml='input.token.word',
@@ -119,8 +101,6 @@ def main(unused_argv):
                                   # fml='input.token.known-word(outside=false)'),
                                   # pretrained_embedding_matrix=FLAGS.embeddings_file,
                                   # is_constant=True)
-
-
 
   lengths = BulkFeatureIdComponentSpecBuilder('lengths')
   lengths.set_network_unit('ExportFixedFeaturesNetwork')
