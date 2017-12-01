@@ -50,7 +50,7 @@ def main(unused_argv):
       token_embedding.vector.values.extend(embedding)
       w.write(str(token_embedding))
       print(str(token_embedding))
-      print(token_embedding.SerializeAsString())
+      print(token_embedding.SerializeToString())
       if write_vocab_to_file:
         vocab.append(token)
       if i == max_to_read:
