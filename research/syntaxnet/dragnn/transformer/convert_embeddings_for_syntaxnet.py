@@ -46,6 +46,7 @@ def main(unused_argv):
       token_embedding.token = token
       token_embedding.vector.values.extend(embedding)
       w.write(str(token_embedding))
+      print(str(token_embedding))
       if write_vocab_to_file:
         vocab.append(token)
 
