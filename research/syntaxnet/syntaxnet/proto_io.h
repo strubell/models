@@ -67,7 +67,7 @@ class ProtoRecordReader {
       return tensorflow::Status::OK();
     } else {
       CHECK_EQ(status.code(), tensorflow::error::OUT_OF_RANGE)
-          << "Non-OK and non-out-of-range (EOF) status: " << status << " " << buffer;
+          << "Non-OK and non-out-of-range (EOF) status: " << status;
       return status;
     }
   }
