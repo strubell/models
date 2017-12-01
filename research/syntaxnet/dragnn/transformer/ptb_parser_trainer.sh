@@ -10,6 +10,7 @@ additional_args=${@:2}
 output_parent="trained"
 embeddings_parent="data/embeddings"
 
+mkdir -p $embeddings_parent
 
 # PTB-specific defs
 #name="ptb"
@@ -26,15 +27,18 @@ morph_to_pos=True
 batch_size=64
 
 # To build, run:
-# bazel build -c opt //dragnn/tools:trainer //dragnn/transformer:process_embeddings //dragnn/transformer:make_parser_spec
+# bazel build -c opt //dragnn/tools:trainer //dragnn/transformer:convet_embeddings_for_syntaxnet \
+#   //dragnn/transformer:make_parser_spec
 
 mkdir -p $output_dir
 
-# todo: check whether embeddings exist, if not, make them
-bazel-bin/dragnn/transformer/convet_embeddings_for_syntaxnet \
-  --proto_embeddings_file=$embeddings_tfrecord_proto \
-  --text_embeddings_file=$embeddings \
-  --vocab_file=$vocab
+# if embeddings proto doesn't exist, make it
+if [ -ne $embeddings_tfrecord_proto ]; then
+    bazel-bin/dragnn/transformer/convet_embeddings_for_syntaxnet \
+      --proto_embeddings_file=$embeddings_tfrecord_proto \
+      --text_embeddings_file=$embeddings \
+      --vocab_file=$vocab
+fi
 
 mkdir -p $output_dir
 bazel-bin/dragnn/transformer/make_parser_spec \
