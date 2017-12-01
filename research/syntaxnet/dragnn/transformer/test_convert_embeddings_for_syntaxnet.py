@@ -62,8 +62,9 @@ def main(unused_argv):
 
   file_queue = tf.train.string_input_producer([FLAGS.proto_embeddings_file])
   reader = tf.TFRecordReader()
-  _, record = reader.read(file_queue)
-  print(record)
+  key, record = reader.read(file_queue)
+  print(key, record)
+  record = tf.Print(record, [record], "record")
   proto = dictionary_pb2.TokenEmbedding()
   print(proto.ParseFromString(record))
 
