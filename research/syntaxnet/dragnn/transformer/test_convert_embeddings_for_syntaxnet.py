@@ -57,10 +57,10 @@ def main(unused_argv):
         print(word, file=f)
 
   file_queue = tf.train.string_input_producer([FLAGS.proto_embeddings_file])
-  with tf.TFRecordReader() as reader:
-    _, record = reader.read(file_queue)
-    proto = dictionary_pb2.TokenEmbedding(record)
-    print(proto)
+  reader = tf.TFRecordReader()
+  _, record = reader.read(file_queue)
+  proto = dictionary_pb2.TokenEmbedding(record)
+  print(proto)
 
 if __name__ == '__main__':
   tf.app.run()

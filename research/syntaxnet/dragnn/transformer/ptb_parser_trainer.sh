@@ -27,7 +27,7 @@ morph_to_pos=True
 batch_size=64
 
 # To build, run:
-# bazel build -c opt //dragnn/tools:trainer //dragnn/transformer:convet_embeddings_for_syntaxnet \
+# bazel build -c opt //dragnn/tools:trainer //dragnn/transformer:convert_embeddings_for_syntaxnet \
 #   //dragnn/transformer:make_parser_spec
 
 mkdir -p $output_dir
