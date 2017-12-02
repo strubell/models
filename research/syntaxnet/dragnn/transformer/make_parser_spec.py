@@ -93,7 +93,7 @@ def main(unused_argv):
     assert FLAGS.embeddings_vocab != ''
     vocab_resource = spec_pb2.Resource()
     vocab_part = vocab_resource.part.add()
-    vocab_part.file_pattern = FLAGS.embeddings_vocab
+    vocab_part.file_pattern = "trained/ptb-trans/resources/word-map" #FLAGS.embeddings_vocab
     vocab_part.file_format = 'text'
 
     embeddings_resource = spec_pb2.Resource()
@@ -103,8 +103,8 @@ def main(unused_argv):
     input_feats.add_fixed_feature(name='fixed_embedding', embedding_dim=100,
                                   fml='input.token.word(outside=false)',
                                   pretrained_embedding_matrix=embeddings_resource,
-                                  is_constant=True)
-                                  # vocab=vocab_resource,
+                                  is_constant=True,
+                                  vocab=vocab_resource)
                                   # vocabulary_size=400000) # todo does this need tobe hard coded?
                                   # fml='input.token.known-word(outside=false)'),
                                   # pretrained_embedding_matrix=FLAGS.embeddings_file,
