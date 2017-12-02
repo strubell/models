@@ -103,9 +103,9 @@ def main(unused_argv):
     input_feats.add_fixed_feature(name='fixed_embedding', embedding_dim=100,
                                   fml='input.token.word(outside=false)',
                                   pretrained_embedding_matrix=embeddings_resource,
-                                  is_constant=True,
-                                  vocab=vocab_resource,
-                                  vocabulary_size=400000) # todo does this need tobe hard coded?
+                                  is_constant=True)
+                                  # vocab=vocab_resource,
+                                  # vocabulary_size=400000) # todo does this need tobe hard coded?
                                   # fml='input.token.known-word(outside=false)'),
                                   # pretrained_embedding_matrix=FLAGS.embeddings_file,
                                   # is_constant=True)
