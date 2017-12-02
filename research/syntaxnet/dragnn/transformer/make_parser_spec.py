@@ -89,7 +89,7 @@ def main(unused_argv):
   pretrained_vocab_resource_part.file_format = 'text'
 
   if FLAGS.embeddings_file != '':
-    assert FLAGS.vocab_file != ''
+    assert FLAGS.embeddings_vocab != ''
     vocab_resource = spec_pb2.Resource()
     vocab_part = vocab_resource.part.add()
     vocab_part.file_pattern = FLAGS.embeddings_vocab
