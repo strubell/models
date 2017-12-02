@@ -82,9 +82,9 @@ def main(unused_argv):
   input_feats.add_fixed_feature(name='pos_tag', embedding_dim=100, fml='input.tag')
   input_feats.add_fixed_feature(name='char_bigram', embedding_dim=16, fml='input.char-bigram')
 
-  pretrained_vocab_resource = spec_pb2.Resource()
-  pretrained_vocab_resource.name = "pretrained-resource"
-  input_feats.spec.resource.add()
+  # pretrained_vocab_resource = spec_pb2.Resource()
+  # pretrained_vocab_resource.name = "pretrained-vocab"
+  # input_feats.spec.resource.add()
 
   if FLAGS.embeddings_file != '':
     # todo assert that there is also a vocab file
