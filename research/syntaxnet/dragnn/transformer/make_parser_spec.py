@@ -80,8 +80,9 @@ def main(unused_argv):
   input_feats.set_transition_system('shift-only')
   input_feats.add_fixed_feature(name='learned_embedding', embedding_dim=100, fml='input.token.word')
   input_feats.add_fixed_feature(name='pos_tag', embedding_dim=100, fml='input.tag')
-  input_feats.add_fixed_feature(name='char_ngram', embedding_dim=16, fml='input.char-ngram(max-length=3)')
+  input_feats.add_fixed_feature(name='char_ngram', embedding_dim=16, fml='input.token.char-ngram(max-length=3)')
 
+  # todo add a function for this in ComponentSpec (or whatever it is)
   pretrained_vocab_resource = input_feats.spec.resource.add()
   pretrained_vocab_resource.name = "fixed_embedding-vocab-input"
   pretrained_vocab_resource_part = pretrained_vocab_resource.part.add()
