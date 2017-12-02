@@ -81,6 +81,11 @@ def main(unused_argv):
   input_feats.add_fixed_feature(name='learned_embedding', embedding_dim=100, fml='input.token.word')
   input_feats.add_fixed_feature(name='pos_tag', embedding_dim=100, fml='input.tag')
   input_feats.add_fixed_feature(name='char_bigram', embedding_dim=16, fml='input.char-bigram')
+
+  pretrained_vocab_resource = spec_pb2.Resource()
+  pretrained_vocab_resource.name = "pretrained-resource"
+  input_feats.spec.resource.add()
+
   if FLAGS.embeddings_file != '':
     # todo assert that there is also a vocab file
     vocab_resource = spec_pb2.Resource()
@@ -94,7 +99,7 @@ def main(unused_argv):
     embedding_part.file_pattern = FLAGS.embeddings_file
 
     input_feats.add_fixed_feature(name='fixed_embedding', embedding_dim=100,
-                                  fml='input.token.known-word(outside=false)',
+                                  fml='input.token.pretrained-vocab(outside=false)',
                                   pretrained_embedding_matrix=embeddings_resource,
                                   is_constant=True,
                                   vocab=vocab_resource,

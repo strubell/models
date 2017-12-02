@@ -192,6 +192,7 @@ class ComponentSpecBuilder(object):
         source_translator=source_translator,
         **kwargs)
 
+
   def fill_from_resources(self, resource_path, tf_master=''):
     """Fills in feature sizes and vocabularies using SyntaxNet lexicon.
 
