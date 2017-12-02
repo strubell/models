@@ -510,8 +510,10 @@ class WordEmbeddingInitializer : public OpKernel {
   tensorflow::Status LoadVocabulary(
       std::unordered_map<string, int64> *vocabulary) const {
     if (!task_context_path_.empty()) {
+      LOG(INFO) << "Loading vocab from task context ";
       return LoadVocabularyFromTaskContext(vocabulary);
     } else {
+      LOG(INFO) << "Loading vocab from file ";
       return LoadVocabularyFromFile(vocabulary);
     }
   }
@@ -560,6 +562,7 @@ class WordEmbeddingInitializer : public OpKernel {
       const int64 index = vocabulary->size();
       (*vocabulary)[line] = index;
     }
+    LOG(INFO) << "Loaded vocab w/ size " << vocabulary->size();
     return tensorflow::Status::OK();
   }
 
