@@ -80,14 +80,16 @@ def main(unused_argv):
   input_feats.set_transition_system('shift-only')
   input_feats.add_fixed_feature(name='learned_embedding', embedding_dim=100, fml='input.token.word')
   input_feats.add_fixed_feature(name='pos_tag', embedding_dim=100, fml='input.tag')
-  input_feats.add_fixed_feature(name='char_bigram', embedding_dim=16, fml='input.char-bigram')
+  input_feats.add_fixed_feature(name='char_ngram', embedding_dim=16, fml='input.char-ngram(max-length=3)')
 
-  # pretrained_vocab_resource = spec_pb2.Resource()
-  # pretrained_vocab_resource.name = "pretrained-vocab"
-  # input_feats.spec.resource.add()
+  pretrained_vocab_resource = input_feats.spec.resource.add()
+  pretrained_vocab_resource.name = "fixed_embedding-vocab-input"
+  pretrained_vocab_resource_part = pretrained_vocab_resource.part.add()
+  pretrained_vocab_resource_part.file_pattern = FLAGS.embeddings_vocab
+  pretrained_vocab_resource_part.file_format = 'text'
 
   if FLAGS.embeddings_file != '':
-    # todo assert that there is also a vocab file
+    assert FLAGS.vocab_file != ''
     vocab_resource = spec_pb2.Resource()
     vocab_part = vocab_resource.part.add()
     vocab_part.file_pattern = FLAGS.embeddings_vocab
@@ -95,11 +97,10 @@ def main(unused_argv):
 
     embeddings_resource = spec_pb2.Resource()
     embedding_part = embeddings_resource.part.add()
-    # todo pass this in
     embedding_part.file_pattern = FLAGS.embeddings_file
 
     input_feats.add_fixed_feature(name='fixed_embedding', embedding_dim=100,
-                                  fml='input.token.pretrained-vocab(outside=false)',
+                                  fml='input.token.word(outside=false)',
                                   pretrained_embedding_matrix=embeddings_resource,
                                   is_constant=True,
                                   vocab=vocab_resource,
