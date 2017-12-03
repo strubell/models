@@ -211,10 +211,10 @@ def build_cross_entropy_loss(logits, gold):
     cost, correct, total: the total cost, the total number of correctly
         predicted labels, and the total number of valid labels.
   """
-  gold = tf.Print(gold, [tf.shape(gold), gold], "gold", summarize=1000)
+  # gold = tf.Print(gold, [tf.shape(gold), gold], "gold", summarize=1000)
   valid = tf.reshape(tf.where(tf.greater(gold, -1)), [-1])
   gold = tf.gather(gold, valid)
-  gold = tf.Print(gold, [tf.shape(gold), gold], "gold gather", summarize=1000)
+  # gold = tf.Print(gold, [tf.shape(gold), gold], "gold gather", summarize=1000)
   logits = tf.gather(logits, valid)
   correct = tf.reduce_sum(tf.to_int32(tf.nn.in_top_k(logits, gold, 1)))
   total = tf.size(gold)
