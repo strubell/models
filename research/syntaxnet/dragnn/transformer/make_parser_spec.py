@@ -64,7 +64,7 @@ def main(unused_argv):
   heads_ff_size = 500
   deps_ff_size = 100
   transformer_total_dim = num_heads * head_size
-  num_classes = 44
+  num_classes = 45
 
   # todo:
   # - set dropouts properly
@@ -83,11 +83,11 @@ def main(unused_argv):
   input_feats.add_fixed_feature(name='char_ngram', embedding_dim=16, fml='input.token.char-ngram(max-length=3)')
 
   # todo add a function for this in ComponentSpec (or whatever it is)
-  pretrained_vocab_resource = input_feats.spec.resource.add()
-  pretrained_vocab_resource.name = "fixed_embedding-vocab-input"
-  pretrained_vocab_resource_part = pretrained_vocab_resource.part.add()
-  pretrained_vocab_resource_part.file_pattern = FLAGS.embeddings_vocab
-  pretrained_vocab_resource_part.file_format = 'text'
+  # pretrained_vocab_resource = input_feats.spec.resource.add()
+  # pretrained_vocab_resource.name = "fixed_embedding-vocab-input"
+  # pretrained_vocab_resource_part = pretrained_vocab_resource.part.add()
+  # pretrained_vocab_resource_part.file_pattern = FLAGS.embeddings_vocab
+  # pretrained_vocab_resource_part.file_format = 'text'
 
   # if FLAGS.embeddings_file != '':
   #   assert FLAGS.embeddings_vocab != ''
