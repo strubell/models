@@ -144,7 +144,7 @@ def add_embeddings(channel_id, feature_spec, seed=None):
         vectors=feature_spec.pretrained_embedding_matrix.part[0].file_pattern,
         vocabulary=feature_spec.vocab.part[0].file_pattern,
 
-        num_special_embeddings=2,
+        num_special_embeddings=1,
         embedding_init=1.0,
         seed=seed1,
         seed2=seed2)
