@@ -165,6 +165,9 @@ class LexiconBuilder : public OpKernel {
 
     // Write mappings to disk.
     words.Save(TaskContext::InputFile(*task_context_.GetInput("word-map")));
+
+    words.Save(TaskContext::InputFile(*task_context_.GetInput("known-word-map")));
+
     lcwords.Save(TaskContext::InputFile(*task_context_.GetInput("lcword-map")));
     tags.Save(TaskContext::InputFile(*task_context_.GetInput("tag-map")));
     categories.Save(

@@ -101,7 +101,7 @@ def main(unused_argv):
     embedding_part.file_pattern = FLAGS.embeddings_file
 
     input_feats.add_fixed_feature(name='fixed_embedding', embedding_dim=100,
-                                  fml='input.token.word', # (outside=false)',
+                                  fml='input.token.known-word(outside=false)',
                                   pretrained_embedding_matrix=embeddings_resource,
                                   is_constant=True,
                                   vocab=vocab_resource)
