@@ -472,8 +472,8 @@ class MasterBuilder(object):
     # Restore that subsequent builds don't use average by default.
     self.read_from_avg = False
 
-    cost = tf.Print(cost, [cost], "cost")
-    effective_batch = tf.Print(effective_batch, [effective_batch], "effective batch")
+    # cost = tf.Print(cost, [cost], "cost")
+    # effective_batch = tf.Print(effective_batch, [effective_batch], "effective batch")
 
     cost = tf.check_numerics(cost, message='Cost is not finite.')
 

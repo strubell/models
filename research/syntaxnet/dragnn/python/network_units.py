@@ -129,8 +129,8 @@ def add_embeddings(channel_id, feature_spec, seed=None):
   check.Gt(feature_spec.embedding_dim, 0,
            'Embeddings requested for non-embedded feature: %s' % feature_spec)
   name = fixed_embeddings_name(channel_id)
-  shape = [feature_spec.vocabulary_size + 1, feature_spec.embedding_dim]
-  # shape = [feature_spec.vocabulary_size, feature_spec.embedding_dim]
+  # shape = [feature_spec.vocabulary_size + 1, feature_spec.embedding_dim]
+  shape = [feature_spec.vocabulary_size, feature_spec.embedding_dim]
   if feature_spec.HasField('pretrained_embedding_matrix'):
     if len(feature_spec.pretrained_embedding_matrix.part) > 1:
       raise RuntimeError('pretrained_embedding_matrix resource contains '
