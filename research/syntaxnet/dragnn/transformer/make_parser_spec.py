@@ -71,7 +71,7 @@ def main(unused_argv):
   # - leaky relu
   # - batching
   # - lazyadam
-  # - initilaize with glove embeddings
+  # - initilaize with glove embeddings full vocab
   # - add learned and fixed embeddings, concat with pos
 
   # Extract input features

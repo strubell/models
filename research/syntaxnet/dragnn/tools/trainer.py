@@ -181,9 +181,13 @@ def main(unused_argv):
   logging.info('Training on %d sentences.', len(training_set))
   logging.info('Tuning on %d sentences.', len(tune_set))
 
-  pretrain_steps = [10000, 0]
-  tagger_steps = 100000
-  train_steps = [tagger_steps, 8 * tagger_steps]
+  # pretrain_steps = [10000, 0]
+  # tagger_steps = 100000
+  # train_steps = [tagger_steps, 8 * tagger_steps]
+
+  pretrain_steps = [0]
+  tagger_steps = 500000
+  train_steps = [tagger_steps]
 
   with tf.Session(FLAGS.tf_master, graph=g) as sess:
     # Make sure to re-initialize all underlying state.
