@@ -93,7 +93,7 @@ def main(unused_argv):
     assert FLAGS.embeddings_vocab != ''
     vocab_resource = spec_pb2.Resource()
     vocab_part = vocab_resource.part.add()
-    vocab_part.file_pattern = "trained/ptb-trans/resources/word-map" #FLAGS.embeddings_vocab
+    vocab_part.file_pattern = "trained/ptb-trans/resources/known-word-map" #FLAGS.embeddings_vocab
     vocab_part.file_format = 'text'
 
     embeddings_resource = spec_pb2.Resource()
