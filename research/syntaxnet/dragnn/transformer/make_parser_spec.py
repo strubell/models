@@ -89,26 +89,26 @@ def main(unused_argv):
   # pretrained_vocab_resource_part.file_pattern = FLAGS.embeddings_vocab
   # pretrained_vocab_resource_part.file_format = 'text'
 
-  # if FLAGS.embeddings_file != '':
-  #   assert FLAGS.embeddings_vocab != ''
-  #   vocab_resource = spec_pb2.Resource()
-  #   vocab_part = vocab_resource.part.add()
-  #   vocab_part.file_pattern = "trained/ptb-trans/resources/word-map" #FLAGS.embeddings_vocab
-  #   vocab_part.file_format = 'text'
-  #
-  #   embeddings_resource = spec_pb2.Resource()
-  #   embedding_part = embeddings_resource.part.add()
-  #   embedding_part.file_pattern = FLAGS.embeddings_file
-  #
-  #   input_feats.add_fixed_feature(name='fixed_embedding', embedding_dim=100,
-  #                                 fml='input.token.word',
-  #                                 pretrained_embedding_matrix=embeddings_resource,
-  #                                 is_constant=True,
-  #                                 vocab=vocab_resource)
-  #                                 # vocabulary_size=400000) # todo does this need tobe hard coded?
-  #                                 # fml='input.token.known-word(outside=false)'),
-  #                                 # pretrained_embedding_matrix=FLAGS.embeddings_file,
-  #                                 # is_constant=True)
+  if FLAGS.embeddings_file != '':
+    assert FLAGS.embeddings_vocab != ''
+    vocab_resource = spec_pb2.Resource()
+    vocab_part = vocab_resource.part.add()
+    vocab_part.file_pattern = "trained/ptb-trans/resources/word-map" #FLAGS.embeddings_vocab
+    vocab_part.file_format = 'text'
+
+    embeddings_resource = spec_pb2.Resource()
+    embedding_part = embeddings_resource.part.add()
+    embedding_part.file_pattern = FLAGS.embeddings_file
+
+    input_feats.add_fixed_feature(name='fixed_embedding', embedding_dim=100,
+                                  fml='input.token.word',
+                                  pretrained_embedding_matrix=embeddings_resource,
+                                  is_constant=True,
+                                  vocab=vocab_resource)
+                                  # vocabulary_size=400000) # todo does this need tobe hard coded?
+                                  # fml='input.token.known-word(outside=false)'),
+                                  # pretrained_embedding_matrix=FLAGS.embeddings_file,
+                                  # is_constant=True)
 
   lengths = BulkFeatureIdComponentSpecBuilder('lengths')
   lengths.set_network_unit('ExportFixedFeaturesNetwork')
