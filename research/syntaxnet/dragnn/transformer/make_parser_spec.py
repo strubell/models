@@ -66,6 +66,8 @@ def main(unused_argv):
   transformer_total_dim = num_heads * head_size
   num_classes = 45
 
+  pos_embedding_dim=32
+
   # todo:
   # - set dropouts properly
   # - leaky relu
@@ -79,7 +81,7 @@ def main(unused_argv):
   input_feats.set_network_unit('IdentityNetwork')
   input_feats.set_transition_system('shift-only')
   input_feats.add_fixed_feature(name='learned_embedding', embedding_dim=100, fml='input.token.word')
-  input_feats.add_fixed_feature(name='pos_tag', embedding_dim=100, fml='input.tag')
+  input_feats.add_fixed_feature(name='pos_tag', embedding_dim=pos_embedding_dim, fml='input.tag')
   input_feats.add_fixed_feature(name='char_ngram', embedding_dim=16, fml='input.token.char-ngram(max-length=3)')
 
   # todo add a function for this in ComponentSpec (or whatever it is)
